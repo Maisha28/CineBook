@@ -7,9 +7,9 @@ public class BookingServiceImpl extends UnicastRemoteObject implements BookingSe
 
 // ---- fill these in from Supabase: Project Settings -> Database ----
 private static final String DB_URL =
-"jdbc:postgresql://db.YOUR_PROJECT_REF.supabase.co:5432/postgres";
+"jdbc:postgresql://db.xjhdsoiaiqsgujwjocnx.supabase.co:5432/postgres";
 private static final String DB_USER = "postgres";
-private static final String DB_PASSWORD = "YOUR_DB_PASSWORD";
+private static final String DB_PASSWORD = "MovieTicketBooker123";
 // ---------------------------------------------------------------
 
 protected BookingServiceImpl() throws RemoteException {
