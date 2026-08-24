@@ -21,10 +21,21 @@ public class ConcurrentClient {
 
         for (int i = 1; i <= n; i++) {
             final String userName = "User" + i;
+            // Each simulated user is a separate logical process/client, so
+            // it gets its own Lamport clock -- NOT one shared clock for all
+            // threads. That would defeat the point of demonstrating
+            // independent, concurrent logical timelines.
+            final LamportClock userClock = new LamportClock();
+
             pool.submit(() -> {
                 try {
                     startGate.await();
-                    String result = service.bookSeat(seatId, userName);
+
+                    // Local event: user decides to send the booking request.
+                    long myLamportTime = userClock.tick();
+                    System.out.println(userName + " -> sending request, lamportTimestamp=" + myLamportTime);
+
+                    String result = service.bookSeat(seatId, userName, myLamportTime);
                     System.out.println(userName + " -> " + result);
                 } catch (Exception e) {
                     System.out.println(userName + " -> ERROR: " + e.getMessage());

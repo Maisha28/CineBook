@@ -4,28 +4,38 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Client {
-public static void main(String[] args) {
-try {
-Registry registry = LocateRegistry.getRegistry("localhost", 1099);
-BookingService service = (BookingService) registry.lookup("BookingService");
 
-Scanner sc = new Scanner(System.in);
-System.out.print("Enter show ID (from your shows table): ");
-String showId = sc.nextLine().trim();
+    // Each Client process is its own logical participant, so it keeps its
+    // own Lamport clock, independent of every other client and the server.
+    private static final LamportClock lamportClock = new LamportClock();
 
-List<String> seats = service.getAvailableSeats(showId);
-System.out.println("Available seats:");
-seats.forEach(System.out::println);
+    public static void main(String[] args) {
+        try {
+            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+            BookingService service = (BookingService) registry.lookup("BookingService");
+            Scanner sc = new Scanner(System.in);
 
-System.out.print("Enter seat id to book: ");
-String seatId = sc.nextLine().trim();
-System.out.print("Enter your name: ");
-String name = sc.nextLine().trim();
+            System.out.print("Enter show ID (from your shows table): ");
+            String showId = sc.nextLine().trim();
 
-String result = service.bookSeat(seatId, name);
-System.out.println(result);
-} catch (Exception e) {
-e.printStackTrace();
-}
-}
+            List<String> seats = service.getAvailableSeats(showId);
+            System.out.println("Available seats:");
+            seats.forEach(System.out::println);
+
+            System.out.print("Enter seat id to book: ");
+            String seatId = sc.nextLine().trim();
+
+            System.out.print("Enter your name: ");
+            String name = sc.nextLine().trim();
+
+            // Local event: "about to send a booking request" -> tick clock.
+            long myLamportTime = lamportClock.tick();
+            System.out.println(name + " sending request with lamportTimestamp=" + myLamportTime);
+
+            String result = service.bookSeat(seatId, name, myLamportTime);
+            System.out.println(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
