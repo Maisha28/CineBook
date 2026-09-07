@@ -4,6 +4,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Client {
+
+    // Each Client process is its own logical participant, so it keeps its
+    // own Lamport clock, independent of every other client and the server.
+    private static final LamportClock lamportClock = new LamportClock();
+
     public static void main(String[] args) {
         try {
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
@@ -19,10 +24,15 @@ public class Client {
 
             System.out.print("Enter seat id to book: ");
             String seatId = sc.nextLine().trim();
+
             System.out.print("Enter your name: ");
             String name = sc.nextLine().trim();
 
-            String result = service.bookSeat(seatId, name);
+            // Local event: "about to send a booking request" -> tick clock.
+            long myLamportTime = lamportClock.tick();
+            System.out.println(name + " sending request with lamportTimestamp=" + myLamportTime);
+
+            String result = service.bookSeat(seatId, name, myLamportTime);
             System.out.println(result);
         } catch (Exception e) {
             e.printStackTrace();
