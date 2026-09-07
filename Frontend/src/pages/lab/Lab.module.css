@@ -1,0 +1,720 @@
+.hubWrap {
+  padding: 32px 20px 60px;
+}
+
+/* ── Diagnostic Header ── */
+.hubHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 24px;
+}
+
+.hubBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--brand-red-subtle);
+  color: var(--brand-red);
+  border: 1px solid var(--brand-red-border);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+.hubTitle {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.hubDesc {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  max-width: 600px;
+}
+
+.diagStrip {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.diagItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  box-shadow: var(--shadow-card);
+}
+
+.diagVal {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.diagSub {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ── Tab Bar ── */
+.tabBar {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 28px;
+  overflow-x: auto;
+  padding-bottom: 1px;
+}
+
+.tabBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background-color: transparent;
+  color: var(--text-muted);
+  border: 1px solid transparent;
+  border-bottom: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: all 0.15s;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tabBtn:hover {
+  color: var(--text-main);
+  background-color: var(--surface-alt);
+}
+
+.tabBtnActive {
+  background-color: #FFFFFF !important;
+  color: var(--brand-red) !important;
+  border-color: var(--border-light) !important;
+  border-top: 2px solid var(--brand-red) !important;
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.03);
+}
+
+.tabTextCol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.tabLabel {
+  line-height: 1.2;
+}
+
+.tabExpNum {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-light);
+  letter-spacing: 0.04em;
+}
+
+/* ── Experiment Container & Shared Cards ── */
+.expContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.expHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.expTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.expSubtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.statusGroup {
+  display: flex;
+  gap: 10px;
+}
+
+.statusPill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: var(--text-body);
+}
+
+.statusDotGreen {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--status-green);
+}
+
+.statusDotRed {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--status-red);
+}
+
+/* Compact Flow Card */
+.flowCard {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+}
+
+.flowHeader {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+.flowNodes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.flowNode {
+  background-color: var(--bg-canvas);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.flowNodeActive {
+  border-color: var(--brand-red-border);
+  background-color: var(--brand-red-subtle);
+}
+
+.flowLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.flowSub {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.flowArrow {
+  color: var(--text-light);
+}
+
+/* Two Column Layout */
+.twoColGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .twoColGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.testCard {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: var(--shadow-card);
+}
+
+.cardHeader {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 16px;
+}
+
+.cardHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.actionRow {
+  margin-top: 14px;
+}
+
+/* Seats Chips Result */
+.seatsResultWrap {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-light);
+}
+
+.resultLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.chipsWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.seatChip {
+  padding: 4px 8px;
+  border: 1px solid var(--border-light);
+  background-color: var(--bg-canvas);
+  border-radius: var(--radius-sm);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-body);
+  transition: all 0.12s;
+}
+
+.seatChip:hover {
+  border-color: var(--brand-red);
+  background-color: var(--brand-red-subtle);
+}
+
+.seatChipActive {
+  background-color: var(--brand-red) !important;
+  color: #FFFFFF !important;
+  border-color: var(--brand-red) !important;
+}
+
+.resultBanner {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+}
+
+.bannerOk {
+  background-color: var(--status-green-bg);
+  border: 1px solid #A7F3D0;
+  color: #065F46;
+}
+
+.bannerErr {
+  background-color: var(--status-red-bg);
+  border: 1px solid #FECDD3;
+  color: #991B1B;
+}
+
+/* ── Concurrency Test Elements ── */
+.formRow {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.metricsRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.metricCard {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metricLabel {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-light);
+}
+
+.metricVal {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.metricValHighlight {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--brand-red);
+  font-family: var(--font-mono);
+}
+
+.valGreen { color: var(--status-green) !important; }
+.valRed   { color: var(--status-red) !important; }
+.valBlue  { color: #2563EB !important; }
+.valMuted { color: var(--text-light) !important; }
+
+.streamList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.streamItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  font-family: var(--font-mono);
+}
+
+.streamItemSuccess {
+  background-color: var(--status-green-bg);
+  border: 1px solid #A7F3D0;
+  color: #065F46;
+}
+
+.streamItemFailed {
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border-light);
+  color: var(--text-muted);
+}
+
+.streamThread {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Clocks Test Elements ── */
+.subTabNav {
+  display: flex;
+  gap: 8px;
+}
+
+.subTabBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  transition: all 0.15s;
+}
+
+.subTabActive {
+  background-color: var(--brand-red-subtle) !important;
+  color: var(--brand-red) !important;
+  border-color: var(--brand-red-border) !important;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.clockTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.clockTable th {
+  text-align: left;
+  padding: 10px 12px;
+  background-color: var(--bg-canvas);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-light);
+  letter-spacing: 0.04em;
+}
+
+.clockTable td {
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.serverRow {
+  background-color: #FFFDFD;
+}
+
+.nodeCell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.monoCell {
+  font-family: var(--font-mono);
+}
+
+.berkeleyStepsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: var(--bg-canvas);
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: var(--text-body);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bStep {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.bStepNum {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--brand-red);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+
+.bStepArrow {
+  color: var(--text-light);
+  transform: rotate(-90deg);
+}
+
+.infoText {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.lamportTimelineWrap {
+  background-color: var(--bg-canvas);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  min-height: 120px;
+}
+
+.emptyPrompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 0;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.timelineList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.timelineEntry {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 6px 10px;
+  background-color: #FFFFFF;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--brand-red);
+}
+
+.timelineServer {
+  border-left-color: #059669;
+}
+
+.timelineIndex {
+  font-weight: 700;
+  color: var(--text-light);
+  min-width: 20px;
+}
+
+.timelineText {
+  color: var(--text-main);
+}
+
+/* ── Leader Election Elements ── */
+.clusterControlBar {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.clusterInfoText {
+  font-size: 13px;
+  color: var(--text-body);
+}
+
+.clusterBtns {
+  display: flex;
+  gap: 10px;
+}
+
+.nodeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+}
+
+.nodeBox {
+  background-color: #FFFFFF;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.15s;
+}
+
+.nodeBoxLeader {
+  border-color: var(--status-green) !important;
+  background-color: #F8FCF9 !important;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.1);
+}
+
+.nodeBoxCrashed {
+  border-color: var(--border-light);
+  background-color: var(--surface-alt);
+  opacity: 0.7;
+}
+
+.nodeHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nodeIdentity {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nodeIdText {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.nodePortText {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.nodePortText code {
+  font-family: var(--font-mono);
+  background-color: var(--bg-canvas);
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.nodeLeaderText {
+  font-size: 12px;
+  color: var(--text-body);
+  margin-top: 2px;
+}
+
+.nodeBtnRow {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.nodeBtnRow button {
+  flex: 1;
+}
+
+.crashedNotice {
+  font-size: 11px;
+  color: var(--status-red);
+  font-style: italic;
+  margin-top: 6px;
+}
+
+/* ── Summary Card ── */
+.summaryCard {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 18px 22px;
+}
+
+.summaryTitle {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.summaryText {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}

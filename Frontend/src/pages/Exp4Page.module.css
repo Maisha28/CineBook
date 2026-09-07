@@ -1,0 +1,72 @@
+.nodeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.nodeCard {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.nodeCard.leader {
+  border-color: var(--green);
+  box-shadow: 0 4px 14px rgba(26, 158, 92, 0.15);
+  background: #fbfefc;
+}
+
+.nodeCard.crashed {
+  background: #fdf2f3;
+  border-color: #fca5a5;
+  opacity: 0.85;
+}
+
+.nodeHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nodeId {
+  font-size: 20px;
+  font-weight: 800;
+  font-family: var(--mono);
+}
+
+.crown {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.nodeBelief {
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--bg);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-family: var(--mono);
+}
+
+.nodeActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.nodeActions button {
+  flex: 1;
+}
+
+.nodeDown {
+  font-size: 12px;
+  color: var(--red);
+  font-style: italic;
+  padding: 4px 0;
+}

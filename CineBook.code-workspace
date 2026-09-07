@@ -1,10 +1,19 @@
 {
 	"folders": [
-		{ "name": "experiment_1 - RMI & RPC", "path": "experiment_1" },
-		{ "name": "experiment_2 - Multithreading", "path": "experiment_2" },
-		{ "name": "experiment_3 - Clock Synchronization", "path": "experiment_3" },
-		{ "name": "experiment_4 - Bully Algorithm", "path": "experiment_4" },
-		{ "name": "lib", "path": "lib" }
+		{ "name": "CineBook Root", "path": "." },
+		{ "name": "Backend", "path": "Backend" },
+		{ "name": "Frontend", "path": "Frontend" }
 	],
-	"settings": {}
+	"settings": {
+		"java.project.sourcePaths": [
+			"Backend/bridge/src",
+			"Backend/experiments/exp1_rmi",
+			"Backend/experiments/exp2_concurrency",
+			"Backend/experiments/exp3_clock",
+			"Backend/experiments/exp4_election"
+		],
+		"java.project.referencedLibraries": [
+			"Backend/lib/**/*.jar"
+		]
+	}
 }

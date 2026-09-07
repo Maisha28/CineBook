@@ -1,0 +1,252 @@
+.pageWrap {
+  padding-bottom: 120px;
+}
+
+/* Show Bar */
+.showBar {
+  background-color: #FFFFFF;
+  border-bottom: 1px solid var(--border-light);
+  padding: 12px 0;
+}
+
+.showBarInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color 0.15s;
+}
+
+.backBtn:hover {
+  color: var(--text-main);
+}
+
+.showDetails {
+  text-align: center;
+}
+
+.showMovie {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.showCinema {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.backendNotice {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--status-green);
+  background-color: var(--status-green-bg);
+  border: 1px solid #A7F3D0;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+}
+
+/* Screen Curve */
+.screenWrapper {
+  max-width: 580px;
+  margin: 0 auto 36px;
+  text-align: center;
+}
+
+.screenCurve {
+  height: 12px;
+  border-top: 4px solid #D1D5DB;
+  border-radius: 50% / 10px 10px 0 0;
+  margin-bottom: 8px;
+}
+
+.screenText {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-light);
+}
+
+/* Seat Layout */
+.seatLayout {
+  max-width: 580px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.seatRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.rowLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-light);
+  width: 18px;
+  text-align: center;
+}
+
+.rowSeats {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  justify-content: center;
+}
+
+.seatBtn {
+  width: 38px;
+  height: 34px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.seatAvailable {
+  background-color: #FFFFFF;
+  border: 1.5px solid #10B981;
+  color: #065F46;
+}
+
+.seatAvailable:hover {
+  border-color: var(--brand-red);
+  background-color: var(--brand-red-subtle);
+  transform: translateY(-2px);
+}
+
+.seatSelected {
+  background-color: var(--brand-red) !important;
+  border: 1.5px solid var(--brand-red-hover) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(229, 25, 55, 0.35);
+}
+
+/* Legend */
+.legendRow {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin: 32px 0 36px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-light);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.legendBox {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+}
+
+.availBox {
+  border: 1.5px solid #10B981;
+  background-color: #FFFFFF;
+}
+
+.selectedBox {
+  background-color: var(--brand-red);
+}
+
+.bookedBox {
+  background-color: #E5E7EB;
+}
+
+/* Form Card */
+.bookingFormCard {
+  max-width: 580px;
+  margin: 0 auto;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 22px;
+}
+
+.formTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 14px;
+}
+
+.formRow {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Checkout Bar */
+.checkoutBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #FFFFFF;
+  border-top: 1px solid var(--border-light);
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+  padding: 14px 0;
+  z-index: 100;
+}
+
+.checkoutInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.summaryLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.selectedCount {
+  font-size: 13px;
+  color: var(--text-body);
+}
+
+.priceTag {
+  font-size: 16px;
+  color: var(--text-main);
+}
+
+.priceTag strong {
+  font-size: 19px;
+  color: var(--brand-red);
+}
+
+.loadingBox {
+  text-align: center;
+  padding: 60px 0;
+  color: var(--text-muted);
+}

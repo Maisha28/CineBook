@@ -1,0 +1,465 @@
+.homeWrap {
+  padding-bottom: 40px;
+}
+
+/* ── Spotlight Hero ── */
+.heroSection {
+  background: linear-gradient(135deg, #111827 0%, #1F2937 100%);
+  color: #FFFFFF;
+  padding: 42px 0 46px;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.heroContent {
+  flex: 1;
+  max-width: 620px;
+}
+
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: rgba(229, 25, 55, 0.2);
+  color: #FF6B81;
+  border: 1px solid rgba(229, 25, 55, 0.35);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 14px;
+}
+
+.heroTitle {
+  color: #FFFFFF;
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.heroMeta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  color: #9CA3AF;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.ratingBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #374151;
+  color: #F3F4F6;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+}
+
+.heroSynopsis {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #D1D5DB;
+  margin-bottom: 24px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.heroActions {
+  display: flex;
+  gap: 12px;
+}
+
+.heroActions button {
+  padding: 10px 22px;
+}
+
+/* Hero Poster Card */
+.heroPosterWrap {
+  width: 250px;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.heroPosterWrap:hover {
+  transform: translateY(-4px);
+}
+
+.heroPoster {
+  aspect-ratio: 2 / 3;
+  border-radius: var(--radius-md);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.posterPattern {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(229, 25, 55, 0.25) 0%, transparent 60%);
+}
+
+.posterInner {
+  position: relative;
+  z-index: 2;
+  padding: 20px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
+}
+
+.posterFormatBadge {
+  display: inline-block;
+  background-color: var(--brand-red);
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-bottom: 8px;
+}
+
+.posterGraphicTitle {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: #FFFFFF;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.posterLanguages {
+  font-size: 11px;
+  color: #D1D5DB;
+  margin-top: 4px;
+}
+
+/* ── Filter Rail ── */
+.filterSection {
+  background-color: #FFFFFF;
+  border-bottom: 1px solid var(--border-light);
+  padding: 12px 0;
+}
+
+.filterContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.filterTabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 0;
+}
+
+.filterBtn {
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background-color: var(--surface-alt);
+  border: 1px solid transparent;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.filterBtn:hover {
+  background-color: #E5E7EB;
+  color: var(--text-main);
+}
+
+.filterBtnActive {
+  background-color: var(--brand-red-subtle) !important;
+  color: var(--brand-red) !important;
+  border-color: var(--brand-red-border) !important;
+  font-weight: 600;
+}
+
+.searchActivePill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--text-body);
+}
+
+.clearSearch {
+  font-size: 11.5px;
+  color: var(--brand-red);
+  text-decoration: underline;
+}
+
+/* ── Movie Grid Section ── */
+.moviesSection {
+  padding: 36px 0;
+}
+
+.movieCount {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.movieGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.movieCard {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.movieCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--border-medium);
+}
+
+.cardPoster {
+  aspect-ratio: 2 / 3;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px;
+}
+
+.cardPosterPattern {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.85) 100%);
+}
+
+.cardPosterContent {
+  position: relative;
+  z-index: 2;
+}
+
+.cardFormatBadge {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(4px);
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-bottom: 6px;
+}
+
+.cardPosterTitle {
+  font-size: 18px;
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+}
+
+.cardCertificate {
+  font-size: 10px;
+  font-weight: 600;
+  color: #D1D5DB;
+  margin-top: 4px;
+  display: inline-block;
+}
+
+.ratingStrip {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  background-color: rgba(17, 24, 39, 0.85);
+  backdrop-filter: blur(4px);
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #FFFFFF;
+  font-size: 11.5px;
+}
+
+.ratingVotes {
+  color: #9CA3AF;
+  font-size: 10px;
+}
+
+.cardDetails {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.cardTitle {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardGenre {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 3px;
+}
+
+.cardLanguages {
+  font-size: 11.5px;
+  color: var(--text-light);
+  margin-bottom: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardFooter {
+  margin-top: auto;
+}
+
+.cardFooter button {
+  width: 100%;
+}
+
+/* ── Cinemas Section ── */
+.cinemasSection {
+  padding: 20px 0 36px;
+}
+
+.cinemasGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.cinemaCard {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cinemaName {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.cinemaLocation {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.formatsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.formatTag {
+  background-color: var(--surface-alt);
+  color: var(--text-body);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 3px;
+  border: 1px solid var(--border-light);
+}
+
+/* ── Platform Section (Subtle) ── */
+.platformSection {
+  padding: 16px 0 24px;
+}
+
+.platformCard {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-left: 4px solid var(--brand-red);
+  border-radius: var(--radius-md);
+  padding: 22px 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.platformInfo {
+  max-width: 720px;
+}
+
+.platformTag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--brand-red);
+  margin-bottom: 6px;
+}
+
+.platformTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 6px;
+}
+
+.platformDesc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Loading & Empty States */
+.loadingState, .emptyState {
+  text-align: center;
+  padding: 48px 0;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}

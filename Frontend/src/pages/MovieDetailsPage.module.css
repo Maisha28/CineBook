@@ -1,0 +1,327 @@
+.pageWrap {
+  padding-bottom: 50px;
+}
+
+/* ── Movie Banner ── */
+.bannerSection {
+  background: linear-gradient(135deg, #111827 0%, #1F2937 100%);
+  color: #FFFFFF;
+  padding: 24px 0 36px;
+}
+
+.bannerContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #9CA3AF;
+  width: fit-content;
+  transition: color 0.15s;
+}
+
+.backBtn:hover {
+  color: #FFFFFF;
+}
+
+.movieHeaderRow {
+  display: flex;
+  gap: 36px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.posterCard {
+  width: 220px;
+  aspect-ratio: 2 / 3;
+  border-radius: var(--radius-md);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.posterPattern {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(229, 25, 55, 0.25) 0%, transparent 60%);
+}
+
+.posterInner {
+  position: relative;
+  z-index: 2;
+  padding: 16px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
+}
+
+.posterBadge {
+  display: inline-block;
+  background-color: var(--brand-red);
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-bottom: 6px;
+}
+
+.posterText {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: #FFFFFF;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.posterCert {
+  font-size: 11px;
+  color: #D1D5DB;
+  margin-top: 4px;
+}
+
+/* Info Column */
+.infoCol {
+  flex: 1;
+  max-width: 720px;
+}
+
+.movieTitle {
+  font-size: 30px;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 12px;
+}
+
+.ratingRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.ratingBox {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #374151;
+  color: #F3F4F6;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+}
+
+.ratingBox span {
+  color: #9CA3AF;
+  font-size: 11px;
+}
+
+.votesText {
+  font-size: 12.5px;
+  color: #9CA3AF;
+}
+
+.tagsRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.formatTag, .langTag {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(4px);
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #9CA3AF;
+  margin-bottom: 16px;
+}
+
+.synopsisText {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #D1D5DB;
+  margin-bottom: 18px;
+}
+
+.castSection {
+  font-size: 12.5px;
+  color: #9CA3AF;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 12px;
+}
+
+.castLabel {
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-right: 6px;
+}
+
+.castList {
+  color: #D1D5DB;
+}
+
+/* ── Date Bar ── */
+.dateBar {
+  background-color: #FFFFFF;
+  border-bottom: 1px solid var(--border-light);
+  padding: 10px 0;
+}
+
+.dateContainer {
+  display: flex;
+  align-items: center;
+}
+
+.dateTabs {
+  display: flex;
+  gap: 10px;
+}
+
+.dateTab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  background-color: var(--surface-alt);
+  border: 1px solid transparent;
+  transition: all 0.15s;
+  min-width: 76px;
+}
+
+.dateTab:hover {
+  background-color: #E5E7EB;
+}
+
+.dateTabActive {
+  background-color: var(--brand-red) !important;
+  color: #FFFFFF !important;
+}
+
+.dateDay {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+}
+
+.dateNum {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* ── Shows Section ── */
+.showsSection {
+  padding: 36px 0;
+}
+
+.cinemaList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cinemaRow {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.cinemaInfo {
+  max-width: 380px;
+}
+
+.cinemaTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.cinemaMeta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.showtimesGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.timeChip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 16px;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  background-color: #FFFFFF;
+  transition: all 0.15s;
+  min-width: 90px;
+}
+
+.timeChip:hover {
+  border-color: var(--brand-red);
+  background-color: var(--brand-red-subtle);
+  transform: translateY(-1px);
+}
+
+.chipTime {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.chipFormat {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.chipPrice {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--brand-red);
+  margin-top: 3px;
+}
+
+.noShows {
+  text-align: center;
+  padding: 48px 0;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}

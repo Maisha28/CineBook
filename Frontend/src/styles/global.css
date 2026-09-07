@@ -1,0 +1,298 @@
+/* ============================================================
+   CineBook Design System
+   Identity: Authentic Indian Movie Ticketing (BookMyShow / District inspired)
+   Palette:  Cinema Crimson (#E51937), Clean White (#FFFFFF),
+             Canvas Neutral (#F8F9FA), Dark Charcoal (#111827)
+   Rules:    ZERO emojis. Restrained, professional, high information density.
+   ============================================================ */
+
+:root {
+  /* Brand Colors */
+  --brand-red:         #E51937;
+  --brand-red-hover:   #B5122A;
+  --brand-red-subtle:  #FFF1F2;
+  --brand-red-border:  #FECDD3;
+
+  /* Surfaces & Backgrounds */
+  --bg-canvas:         #F8F9FA;
+  --surface-white:     #FFFFFF;
+  --surface-alt:       #F3F4F6;
+  --surface-dark:      #111827;
+
+  /* Typography Colors */
+  --text-main:         #111827;
+  --text-body:         #374151;
+  --text-muted:        #6B7280;
+  --text-light:        #9CA3AF;
+  --text-inverse:      #FFFFFF;
+
+  /* Borders & Dividers */
+  --border-light:      #E5E7EB;
+  --border-medium:     #D1D5DB;
+
+  /* Status Colors */
+  --status-green:      #059669;
+  --status-green-bg:   #ECFDF5;
+  --status-amber:      #D97706;
+  --status-amber-bg:   #FFFBEB;
+  --status-red:        #DC2626;
+  --status-red-bg:     #FEF2F2;
+
+  /* Cinema Seats */
+  --seat-avail-bg:     #FFFFFF;
+  --seat-avail-border: #10B981;
+  --seat-avail-text:   #065F46;
+  --seat-selected-bg:  #E51937;
+  --seat-selected-txt: #FFFFFF;
+  --seat-booked-bg:    #E5E7EB;
+  --seat-booked-txt:   #9CA3AF;
+
+  /* Sizing & Layout */
+  --nav-height:        64px;
+  --subnav-height:     42px;
+  --max-width:         1160px;
+  --radius-sm:         4px;
+  --radius-md:         8px;
+  --radius-lg:         12px;
+
+  /* Subtle Shadows */
+  --shadow-card:       0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-hover:      0 8px 20px rgba(0, 0, 0, 0.08);
+  --shadow-modal:      0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Typography */
+  --font-sans:         'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono:         'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: var(--bg-canvas);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ── Typography Scale ─────────────────────────────────────── */
+h1, h2, h3, h4 {
+  color: var(--text-main);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+h1 { font-size: 26px; letter-spacing: -0.02em; }
+h2 { font-size: 20px; letter-spacing: -0.01em; }
+h3 { font-size: 16px; font-weight: 600; }
+h4 { font-size: 14px; font-weight: 600; }
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ── Container Layout ─────────────────────────────────────── */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  padding-top: calc(var(--nav-height) + var(--subnav-height));
+  flex: 1;
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  transition: background-color 0.15s, border-color 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: var(--brand-red);
+  color: #FFFFFF;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--brand-red-hover);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--border-medium);
+  color: var(--text-main);
+}
+
+.btn-outline:hover:not(:disabled) {
+  border-color: var(--brand-red);
+  color: var(--brand-red);
+  background-color: var(--brand-red-subtle);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--text-muted);
+  padding: 6px 12px;
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background-color: var(--surface-alt);
+  color: var(--text-main);
+}
+
+.btn-sm {
+  padding: 5px 12px;
+  font-size: 12px;
+}
+
+.btn-lg {
+  padding: 12px 24px;
+  font-size: 15px;
+}
+
+/* ── Inputs ───────────────────────────────────────────────── */
+.input {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-family: var(--font-sans);
+  color: var(--text-main);
+  background-color: #FFFFFF;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.input:focus {
+  border-color: var(--brand-red);
+  box-shadow: 0 0 0 2px rgba(229, 25, 55, 0.12);
+}
+
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* ── Badges ───────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.badge-red {
+  background-color: var(--brand-red-subtle);
+  color: var(--brand-red);
+  border: 1px solid var(--brand-red-border);
+}
+
+.badge-green {
+  background-color: var(--status-green-bg);
+  color: var(--status-green);
+  border: 1px solid #A7F3D0;
+}
+
+.badge-neutral {
+  background-color: var(--surface-alt);
+  color: var(--text-muted);
+  border: 1px solid var(--border-light);
+}
+
+/* ── Terminal / Diagnostic Console ────────────────────────── */
+.terminal {
+  background: #18181B;
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #E4E4E7;
+  max-height: 280px;
+  overflow-y: auto;
+  line-height: 1.7;
+}
+
+.terminal .t-ok   { color: #34D399; }
+.terminal .t-err  { color: #F87171; }
+.terminal .t-warn { color: #FBBF24; }
+.terminal .t-info { color: #60A5FA; }
+.terminal .t-dim  { color: #71717A; }
+
+/* ── Spinner ──────────────────────────────────────────────── */
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

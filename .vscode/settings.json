@@ -1,0 +1,12 @@
+{
+  "java.project.sourcePaths": [
+    "Backend/bridge/src",
+    "Backend/experiments/exp1_rmi",
+    "Backend/experiments/exp2_concurrency",
+    "Backend/experiments/exp3_clock",
+    "Backend/experiments/exp4_election"
+  ],
+  "java.project.referencedLibraries": [
+    "Backend/lib/**/*.jar"
+  ]
+}

@@ -1,0 +1,259 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* ── Top Bar ── */
+.topBar {
+  height: var(--nav-height);
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+}
+
+.topBarInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 24px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.logoIcon {
+  width: 34px;
+  height: 34px;
+  background-color: var(--brand-red);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoText {
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--brand-red);
+  letter-spacing: -0.03em;
+}
+
+/* Search Box */
+.searchWrap {
+  flex: 1;
+  max-width: 540px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 14px;
+  color: var(--text-light);
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 10px 14px 10px 38px;
+  background-color: var(--bg-canvas);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  color: var(--text-main);
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.searchInput:focus {
+  background-color: #FFFFFF;
+  border-color: var(--brand-red);
+  box-shadow: 0 0 0 2px rgba(229, 25, 55, 0.1);
+}
+
+.searchInput::placeholder {
+  color: var(--text-light);
+}
+
+/* Right Actions */
+.rightActions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.citySelectorWrap {
+  position: relative;
+}
+
+.cityBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-body);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s;
+}
+
+.cityBtn:hover {
+  background-color: var(--surface-alt);
+}
+
+.cityDropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  width: 170px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-modal);
+  padding: 6px 0;
+  z-index: 300;
+}
+
+.dropdownHeader {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-light);
+  padding: 6px 14px;
+  letter-spacing: 0.05em;
+}
+
+.cityOption {
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-body);
+  cursor: pointer;
+  transition: background-color 0.12s;
+}
+
+.cityOption:hover {
+  background-color: var(--surface-alt);
+  color: var(--brand-red);
+}
+
+.cityActive {
+  color: var(--brand-red);
+  font-weight: 600;
+  background-color: var(--brand-red-subtle);
+}
+
+.signInBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  background-color: var(--brand-red);
+  color: #FFFFFF;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  transition: background-color 0.15s;
+}
+
+.signInBtn:hover {
+  background-color: var(--brand-red-hover);
+}
+
+/* ── Secondary Navigation ── */
+.subBar {
+  height: var(--subnav-height);
+  background-color: #FFFFFF;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+}
+
+.subBarInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.navLink {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color 0.15s;
+  padding: 4px 0;
+  position: relative;
+}
+
+.navLink:hover {
+  color: var(--text-main);
+}
+
+.navActive {
+  color: var(--brand-red) !important;
+  font-weight: 600;
+}
+
+.navActive::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--brand-red);
+}
+
+.labLink {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-body);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border-light);
+  transition: all 0.15s;
+}
+
+.labLink:hover {
+  border-color: var(--brand-red-border);
+  background-color: var(--brand-red-subtle);
+  color: var(--brand-red);
+}
+
+.labActive {
+  border-color: var(--brand-red);
+  background-color: var(--brand-red-subtle);
+  color: var(--brand-red);
+}
+
+.labBadge {
+  font-size: 10px;
+  font-weight: 600;
+  background-color: #FFFFFF;
+  padding: 1px 6px;
+  border-radius: 3px;
+  border: 1px solid var(--border-light);
+  color: var(--text-muted);
+}
