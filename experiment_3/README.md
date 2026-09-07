@@ -22,6 +22,6 @@ Builds on [Experiment 2](../experiment_2) to add:
 From this folder:
 ```
 javac -cp ../lib/postgresql-42.7.4.jar *.java
-java -cp .;../lib/postgresql-42.7.4.jar Server
-java -cp .;../lib/postgresql-42.7.4.jar ConcurrentClient   # or Client, or ClockDemo
+java -cp ".;../lib/postgresql-42.7.4.jar" Server
+java -cp ".;../lib/postgresql-42.7.4.jar" ConcurrentClient   # or Client, or ClockDemo
 ```

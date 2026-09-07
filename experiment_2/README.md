@@ -15,8 +15,8 @@ seat concurrently, and how `synchronized` fixes it.
 From this folder:
 ```
 javac -cp ../lib/postgresql-42.7.4.jar *.java
-java -cp .;../lib/postgresql-42.7.4.jar Server
-java -cp .;../lib/postgresql-42.7.4.jar ConcurrentClient   # in a second terminal
+java -cp ".;../lib/postgresql-42.7.4.jar" Server
+java -cp ".;../lib/postgresql-42.7.4.jar" ConcurrentClient   # in a second terminal
 ```
 
 To reproduce the race, remove `synchronized` from `bookSeat` in

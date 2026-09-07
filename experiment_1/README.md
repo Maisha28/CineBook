@@ -14,6 +14,6 @@ if it were local. Backed by a Postgres (Supabase) database.
 From this folder:
 ```
 javac -cp ../lib/postgresql-42.7.4.jar *.java
-java -cp .;../lib/postgresql-42.7.4.jar Server
-java -cp .;../lib/postgresql-42.7.4.jar Client   # in a second terminal
+java -cp ".;../lib/postgresql-42.7.4.jar" Server
+java -cp ".;../lib/postgresql-42.7.4.jar" Client   # in a second terminal
 ```

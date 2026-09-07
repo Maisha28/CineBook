@@ -33,14 +33,15 @@ highest ID) as the assumed leader.
 - `announceCoordinator(id)`: adopt `id` as the new leader.
 
 ## Run: separate processes (multi-terminal)
-From this folder, one terminal per process:
+This experiment has no database dependency, so no classpath jar is needed --
+just compile and run directly. From this folder, one terminal per process:
 ```
-javac -cp ../lib/postgresql-42.7.4.jar *.java
-java -cp .;../lib/postgresql-42.7.4.jar ProcessMain 1
-java -cp .;../lib/postgresql-42.7.4.jar ProcessMain 2
-java -cp .;../lib/postgresql-42.7.4.jar ProcessMain 3
-java -cp .;../lib/postgresql-42.7.4.jar ProcessMain 4
-java -cp .;../lib/postgresql-42.7.4.jar ProcessMain 5
+javac *.java
+java ProcessMain 1
+java ProcessMain 2
+java ProcessMain 3
+java ProcessMain 4
+java ProcessMain 5
 ```
 Each console has a small menu: send a booking request to the current
 leader, start an election manually, check status, or crash (terminate)
@@ -50,8 +51,8 @@ P5 unreachable and start the election.
 
 ## Run: single-JVM demo (one combined log)
 ```
-javac -cp ../lib/postgresql-42.7.4.jar *.java
-java -cp .;../lib/postgresql-42.7.4.jar ElectionDemo
+javac *.java
+java ElectionDemo
 ```
 This runs two independent 5-node clusters back to back:
 

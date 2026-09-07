@@ -1,0 +1,10 @@
+{
+	"folders": [
+		{ "name": "experiment_1 - RMI & RPC", "path": "experiment_1" },
+		{ "name": "experiment_2 - Multithreading", "path": "experiment_2" },
+		{ "name": "experiment_3 - Clock Synchronization", "path": "experiment_3" },
+		{ "name": "experiment_4 - Bully Algorithm", "path": "experiment_4" },
+		{ "name": "lib", "path": "lib" }
+	],
+	"settings": {}
+}

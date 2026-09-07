@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 // Run one process as its own OS process / terminal:
-//   java -cp .;../lib/postgresql-42.7.4.jar ProcessMain <id 1-5> [initialLeaderId]
+//   java ProcessMain <id 1-5> [initialLeaderId]
 // With all five running in separate terminals this is the real distributed
 // version of the demo -- each Pn only talks to the others over RMI.
 public class ProcessMain {
