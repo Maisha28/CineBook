@@ -51,6 +51,11 @@ npm run dev
 4. **Experiment 4: Bully Leader Election Algorithm** (`Backend/experiments/exp4_election`)
    - 5-node cluster (P1..P5 on ports 1101..1105) with node failure injection and coordinator takeover.
 
+### Command-line experiments (not wired into the web lab)
+
+5. **Experiment 5: Primary-Backup Replication** ([`Backend/experiment_5`](Backend/experiment_5))
+   - Fault tolerance: a primary and backup booking server with client-driven failover and recovery. See its README for how to run it.
+
 ---
 
 ## Folder Structure

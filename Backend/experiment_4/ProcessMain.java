@@ -1,9 +1,4 @@
 import java.util.Scanner;
-
-// Run one process as its own OS process / terminal:
-//   java ProcessMain <id 1-5> [initialLeaderId]
-// With all five running in separate terminals this is the real distributed
-// version of the demo -- each Pn only talks to the others over RMI.
 public class ProcessMain {
     public static void main(String[] args) throws Exception {
         if (args.length < 1) {
@@ -12,10 +7,8 @@ public class ProcessMain {
         }
         int id = Integer.parseInt(args[0]);
         int initialLeader = args.length > 1 ? Integer.parseInt(args[1]) : 5;
-
         ProcessNode node = new ProcessNode(id, initialLeader, 0);
         node.start();
-
         Scanner sc = new Scanner(System.in);
         while (true) {
             System.out.println("\n[P" + id + "] known leader = P" + node.getLeaderId());
@@ -39,6 +32,4 @@ public class ProcessMain {
                 default:
                     System.out.println("unknown option");
             }
-        }
-    }
-}
+        }}}

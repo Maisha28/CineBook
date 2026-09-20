@@ -1,0 +1,5 @@
+# Copy this file to db.properties (which is gitignored) and fill in the
+# password. Supabase dashboard: Project Settings -> Database.
+db.url=jdbc:postgresql://aws-0-ap-south-1.pooler.supabase.com:5432/postgres
+db.user=postgres.xjhdsoiaiqsgujwjocnx
+db.password=YOUR_DB_PASSWORD
