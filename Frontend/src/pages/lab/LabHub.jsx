@@ -1,23 +1,25 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Server, Zap, Clock, ShieldCheck, Layers, Cpu, Database, Activity } from 'lucide-react'
+import { Server, Zap, Clock, ShieldCheck, Shield, Layers, Cpu, Database, Activity } from 'lucide-react'
 import LabExp1Rmi from './LabExp1Rmi'
 import LabExp2Concurrency from './LabExp2Concurrency'
 import LabExp3Clocks from './LabExp3Clocks'
 import LabExp4Election from './LabExp4Election'
+import LabExp5Replication from './LabExp5Replication'
 import styles from './Lab.module.css'
 
 const TABS = [
   { id: 'rmi', label: 'RMI Remote Service', icon: Server, expNum: 'Exp 1' },
   { id: 'concurrency', label: 'Concurrent Booking Test', icon: Zap, expNum: 'Exp 2' },
   { id: 'clocks', label: 'Clock Synchronization', icon: Clock, expNum: 'Exp 3' },
-  { id: 'election', label: 'Bully Leader Election', icon: ShieldCheck, expNum: 'Exp 4' }
+  { id: 'election', label: 'Bully Leader Election', icon: ShieldCheck, expNum: 'Exp 4' },
+  { id: 'replication', label: 'Primary-Backup Replication', icon: Shield, expNum: 'Exp 5' }
 ]
 
 export default function LabHub() {
   const [searchParams, setSearchParams] = useSearchParams()
   const rawTab = searchParams.get('tab') || 'rmi'
-  const tabAliases = { exp1: 'rmi', exp2: 'concurrency', exp3: 'clocks', exp4: 'election' }
+  const tabAliases = { exp1: 'rmi', exp2: 'concurrency', exp3: 'clocks', exp4: 'election', exp5: 'replication' }
   const currentTab = tabAliases[rawTab] || rawTab
 
   function switchTab(tabId) {
@@ -64,6 +66,14 @@ export default function LabHub() {
               <div className={styles.diagSub}>ACID Persistence</div>
             </div>
           </div>
+
+          <div className={styles.diagItem}>
+            <Shield size={15} color="#7C3AED" />
+            <div>
+              <div className={styles.diagVal}>Nodes :1201/:1202</div>
+              <div className={styles.diagSub}>Primary-Backup Redundant</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -95,6 +105,7 @@ export default function LabHub() {
         {currentTab === 'concurrency' && <LabExp2Concurrency />}
         {currentTab === 'clocks' && <LabExp3Clocks />}
         {currentTab === 'election' && <LabExp4Election />}
+        {currentTab === 'replication' && <LabExp5Replication />}
       </div>
     </div>
   )

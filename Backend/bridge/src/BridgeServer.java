@@ -73,6 +73,21 @@ public class BridgeServer {
         route(server, "/api/exp4/stop",    ex -> Exp4Handler.stopCluster(ex));
         route(server, "/api/exp4/logs",    ex -> Exp4Handler.logs(ex));
 
+        // ── Experiment 5: Fault Tolerance & Primary-Backup Replication ────────
+        route(server, "/api/exp5/status",      ex -> Exp5Handler.status(ex));
+        route(server, "/api/exp5/start",       ex -> Exp5Handler.startCluster(ex));
+        route(server, "/api/exp5/stop",        ex -> Exp5Handler.stopCluster(ex));
+        route(server, "/api/exp5/crash",       ex -> Exp5Handler.crash(ex));
+        route(server, "/api/exp5/restart",     ex -> Exp5Handler.restart(ex));
+        route(server, "/api/exp5/arm-crash",   ex -> Exp5Handler.armCrash(ex));
+        route(server, "/api/exp5/activate",    ex -> Exp5Handler.activate(ex));
+        route(server, "/api/exp5/seats",       ex -> Exp5Handler.seats(ex));
+        route(server, "/api/exp5/book",        ex -> Exp5Handler.book(ex));
+        route(server, "/api/exp5/logs",        ex -> Exp5Handler.logs(ex));
+        route(server, "/api/exp5/replicalogs", ex -> Exp5Handler.replicaLogs(ex));
+        route(server, "/api/exp5/demo/step",   ex -> Exp5Handler.demoStep(ex));
+        route(server, "/api/exp5/reset",       ex -> Exp5Handler.reset(ex));
+
         server.setExecutor(Executors.newCachedThreadPool());
         server.start();
         System.out.println("[BridgeServer] Listening on http://localhost:" + PORT);

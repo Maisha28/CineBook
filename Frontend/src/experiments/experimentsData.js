@@ -66,5 +66,22 @@ export const EXPERIMENTS_DATA = {
     concepts: ['Bully Algorithm', 'Coordinator Failure', 'Heartbeat Timeout', 'Dynamic Re-election'],
     summary: 'A cluster of 5 independent RMI process nodes (P1–P5 on ports 1101–1105). When the current leader crashes, survivor nodes execute the Bully algorithm to elect the highest alive node.',
     ports: [1101, 1102, 1103, 1104, 1105],
+  },
+  exp5: {
+    id: 'exp5',
+    num: 'Experiment 5',
+    title: 'Fault Tolerance & Primary-Backup Replication',
+    icon: '🛡️',
+    badge: 'High Availability & Replication',
+    javaFiles: [
+      'Backend/experiment_5/BookingServer.java',
+      'Backend/experiment_5/ReplicatedBookingServer.java',
+      'Backend/experiment_5/Client.java',
+      'Backend/experiment_5/Cluster.java',
+      'Backend/experiment_5/FailoverDemo.java'
+    ],
+    concepts: ['Primary-Backup Replication', 'Synchronous PREPARE/COMMIT', 'Client Heartbeat Liveness', 'Idempotent Retry (operationId)', 'State Recovery & Sync'],
+    summary: 'Two redundant booking servers (Primary on port 1201, Backup on port 1202). Synchronous PREPARE/COMMIT replication prevents data loss, client heartbeats drive automatic failover, and idempotency keys prevent duplicate bookings during crash retries.',
+    ports: [1201, 1202],
   }
 }

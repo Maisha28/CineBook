@@ -363,6 +363,16 @@ public class ReplicatedBookingServer extends UnicastRemoteObject implements Book
         return role;
     }
 
+    public List<OperationRecord> getOpLogSnapshot() {
+        synchronized (opLog) {
+            return new ArrayList<>(opLog.values());
+        }
+    }
+
+    public boolean isCrashAfterDbCommitArmed() {
+        return crashAfterDbCommit;
+    }
+
     public void printReplicaLog() {
         List<OperationRecord> ops;
         synchronized (opLog) {

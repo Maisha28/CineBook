@@ -248,7 +248,7 @@ export default function Home() {
               <h3 className={styles.platformTitle}>Powered by Real Distributed Computing Concepts</h3>
               <p className={styles.platformDesc}>
                 Behind CineBook's consumer booking experience runs an academic distributed architecture: Java RMI remote booking services,
-                synchronized concurrency controls, Lamport & Berkeley clock synchronization, and a 5-node Bully leader election cluster.
+                synchronized concurrency controls, Lamport & Berkeley clock synchronization, a 5-node Bully leader election cluster, and primary-backup fault tolerance with automated failover.
               </p>
             </div>
             <button

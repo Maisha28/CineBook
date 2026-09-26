@@ -50,11 +50,8 @@ npm run dev
    - Interactive Berkeley master-slave clock offset calculation and Lamport logical event ordering.
 4. **Experiment 4: Bully Leader Election Algorithm** (`Backend/experiments/exp4_election`)
    - 5-node cluster (P1..P5 on ports 1101..1105) with node failure injection and coordinator takeover.
-
-### Command-line experiments (not wired into the web lab)
-
-5. **Experiment 5: Primary-Backup Replication** ([`Backend/experiment_5`](Backend/experiment_5))
-   - Fault tolerance: a primary and backup booking server with client-driven failover and recovery. See its README for how to run it.
+5. **Experiment 5: Primary-Backup Fault Tolerance & Replication** (`Backend/experiment_5`)
+   - Redundant 2-server cluster (Primary on :1201, Backup on :1202) featuring synchronous PREPARE/COMMIT 2-phase replication, client heartbeat liveness detection, automatic failover, mid-transaction fault injection, and idempotent retries via operationId deduplication. Accessible directly at `/lab?tab=replication` or `/exp5`.
 
 ---
 

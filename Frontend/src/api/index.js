@@ -43,6 +43,23 @@ export const exp4 = {
   getLogs:      () => http.get('/exp4/logs').then(r => r.data),
 }
 
+// ── Experiment 5 (Primary-Backup Replication & Failover) ───────────────
+export const exp5 = {
+  status:         () => http.get('/exp5/status').then(r => r.data),
+  startCluster:   () => http.post('/exp5/start').then(r => r.data),
+  stopCluster:    () => http.post('/exp5/stop').then(r => r.data),
+  crash:          (node) => http.post(`/exp5/crash?node=${encodeURIComponent(node)}`).then(r => r.data),
+  restart:        (node) => http.post(`/exp5/restart?node=${encodeURIComponent(node)}`).then(r => r.data),
+  armCrash:       (node) => http.post(`/exp5/arm-crash?node=${encodeURIComponent(node)}`).then(r => r.data),
+  activate:       (node) => http.post(`/exp5/activate?node=${encodeURIComponent(node)}`).then(r => r.data),
+  getSeats:       (showId) => http.get(`/exp5/seats?showId=${encodeURIComponent(showId || '')}`).then(r => r.data),
+  bookSeat:       (params) => http.post('/exp5/book', params).then(r => r.data),
+  getLogs:        () => http.get('/exp5/logs').then(r => r.data),
+  getReplicaLogs: () => http.get('/exp5/replicalogs').then(r => r.data),
+  demoStep:       (step) => http.post(`/exp5/demo/step?step=${encodeURIComponent(step)}`).then(r => r.data),
+  reset:          () => http.post('/exp5/reset').then(r => r.data),
+}
+
 // ── Seat String Parser ─────────────────────────────────────────────────
 // Parses backend format: "A1 (id=seat-uuid)"
 export function parseSeat(raw) {

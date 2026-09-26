@@ -16,8 +16,8 @@ echo [1/3] Cleaning output directory...
 if exist %OUT% rmdir /s /q %OUT%
 mkdir %OUT%
 
-echo [2/3] Compiling bridge sources...
-javac -cp "%LIB%" -d %OUT% %SRC%\*.java
+echo [2/3] Compiling bridge and experiment sources...
+javac -cp "%LIB%" -d %OUT% %SRC%\*.java ..\experiment_5\*.java
 if %ERRORLEVEL% neq 0 (
     echo BUILD FAILED
     exit /b 1
