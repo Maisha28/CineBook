@@ -83,5 +83,20 @@ export const EXPERIMENTS_DATA = {
     concepts: ['Primary-Backup Replication', 'Synchronous PREPARE/COMMIT', 'Client Heartbeat Liveness', 'Idempotent Retry (operationId)', 'State Recovery & Sync'],
     summary: 'Two redundant booking servers (Primary on port 1201, Backup on port 1202). Synchronous PREPARE/COMMIT replication prevents data loss, client heartbeats drive automatic failover, and idempotency keys prevent duplicate bookings during crash retries.',
     ports: [1201, 1202],
+  },
+  exp6: {
+    id: 'exp6',
+    num: 'Experiment 6',
+    title: 'Distributed 2PC & Quorum Consensus',
+    icon: '🌐',
+    badge: 'Distributed Transactions & Consensus',
+    javaFiles: [
+      'Backend/experiment_6/TwoPhaseCommitCoordinator.java',
+      'Backend/experiment_6/ParticipantNode.java',
+      'Backend/experiment_6/QuorumManager.java',
+      'Backend/experiment_6/TransactionRecord.java'
+    ],
+    concepts: ['Two-Phase Commit (2PC)', 'Phase 1 Vote Request / Prepare', 'Phase 2 Global Commit / Abort', 'Compensating Rollback', 'Quorum Consensus (N, W, R)', 'Strong vs Eventual Consistency'],
+    summary: 'Orchestrates distributed multi-service transactions (Seat Booking, Payment Gateway, Inventory) using a 2-Phase Commit (2PC) coordinator with atomic prepare/vote & commit/rollback logic, alongside a Quorum Consensus engine (N, W, R) demonstrating Read-Your-Writes strong consistency guarantees.',
   }
 }

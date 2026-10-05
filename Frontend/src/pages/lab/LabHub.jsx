@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Server, Zap, Clock, ShieldCheck, Shield, Layers, Cpu, Database, Activity } from 'lucide-react'
+import { Server, Zap, Clock, ShieldCheck, Shield, Layers, Cpu, Database, Activity, Globe } from 'lucide-react'
 import LabExp1Rmi from './LabExp1Rmi'
 import LabExp2Concurrency from './LabExp2Concurrency'
 import LabExp3Clocks from './LabExp3Clocks'
 import LabExp4Election from './LabExp4Election'
 import LabExp5Replication from './LabExp5Replication'
+import LabExp6TwoPhaseCommit from './LabExp6TwoPhaseCommit'
 import styles from './Lab.module.css'
 
 const TABS = [
@@ -13,13 +14,14 @@ const TABS = [
   { id: 'concurrency', label: 'Concurrent Booking Test', icon: Zap, expNum: 'Exp 2' },
   { id: 'clocks', label: 'Clock Synchronization', icon: Clock, expNum: 'Exp 3' },
   { id: 'election', label: 'Bully Leader Election', icon: ShieldCheck, expNum: 'Exp 4' },
-  { id: 'replication', label: 'Primary-Backup Replication', icon: Shield, expNum: 'Exp 5' }
+  { id: 'replication', label: 'Primary-Backup Replication', icon: Shield, expNum: 'Exp 5' },
+  { id: '2pc', label: '2PC & Quorum Consensus', icon: Globe, expNum: 'Exp 6' }
 ]
 
 export default function LabHub() {
   const [searchParams, setSearchParams] = useSearchParams()
   const rawTab = searchParams.get('tab') || 'rmi'
-  const tabAliases = { exp1: 'rmi', exp2: 'concurrency', exp3: 'clocks', exp4: 'election', exp5: 'replication' }
+  const tabAliases = { exp1: 'rmi', exp2: 'concurrency', exp3: 'clocks', exp4: 'election', exp5: 'replication', exp6: '2pc' }
   const currentTab = tabAliases[rawTab] || rawTab
 
   function switchTab(tabId) {
@@ -106,6 +108,7 @@ export default function LabHub() {
         {currentTab === 'clocks' && <LabExp3Clocks />}
         {currentTab === 'election' && <LabExp4Election />}
         {currentTab === 'replication' && <LabExp5Replication />}
+        {currentTab === '2pc' && <LabExp6TwoPhaseCommit />}
       </div>
     </div>
   )

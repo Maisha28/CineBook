@@ -60,6 +60,21 @@ export const exp5 = {
   reset:          () => http.post('/exp5/reset').then(r => r.data),
 }
 
+// ── Experiment 6 (Distributed 2PC & Quorum Consensus) ─────────────────
+export const exp6 = {
+  status:       () => http.get('/exp6/status').then(r => r.data),
+  startCluster: () => http.post('/exp6/start').then(r => r.data),
+  stopCluster:  () => http.post('/exp6/stop').then(r => r.data),
+  transaction:  (params) => http.post('/exp6/transaction', params).then(r => r.data),
+  fault:        (nodeId, action) => http.post(`/exp6/fault?nodeId=${encodeURIComponent(nodeId)}&action=${encodeURIComponent(action)}`).then(r => r.data),
+  quorumConfig: (N, W, R) => http.post(`/exp6/quorum/config?N=${N}&W=${W}&R=${R}`).then(r => r.data),
+  quorumWrite:  (params) => http.post('/exp6/quorum/write', params).then(r => r.data),
+  quorumRead:   () => http.post('/exp6/quorum/read').then(r => r.data),
+  getLogs:      () => http.get('/exp6/logs').then(r => r.data),
+  reset:        () => http.post('/exp6/reset').then(r => r.data),
+}
+
+
 // ── Seat String Parser ─────────────────────────────────────────────────
 // Parses backend format: "A1 (id=seat-uuid)"
 export function parseSeat(raw) {

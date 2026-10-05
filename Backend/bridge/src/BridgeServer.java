@@ -88,6 +88,18 @@ public class BridgeServer {
         route(server, "/api/exp5/demo/step",   ex -> Exp5Handler.demoStep(ex));
         route(server, "/api/exp5/reset",       ex -> Exp5Handler.reset(ex));
 
+        // ── Experiment 6: 2PC & Quorum Consensus ─────────────────────────────
+        route(server, "/api/exp6/status",        ex -> Exp6Handler.status(ex));
+        route(server, "/api/exp6/start",         ex -> Exp6Handler.startCluster(ex));
+        route(server, "/api/exp6/stop",          ex -> Exp6Handler.stopCluster(ex));
+        route(server, "/api/exp6/transaction",   ex -> Exp6Handler.transaction(ex));
+        route(server, "/api/exp6/fault",         ex -> Exp6Handler.fault(ex));
+        route(server, "/api/exp6/quorum/config", ex -> Exp6Handler.quorumConfig(ex));
+        route(server, "/api/exp6/quorum/write",  ex -> Exp6Handler.quorumWrite(ex));
+        route(server, "/api/exp6/quorum/read",   ex -> Exp6Handler.quorumRead(ex));
+        route(server, "/api/exp6/logs",          ex -> Exp6Handler.logs(ex));
+        route(server, "/api/exp6/reset",         ex -> Exp6Handler.reset(ex));
+
         server.setExecutor(Executors.newCachedThreadPool());
         server.start();
         System.out.println("[BridgeServer] Listening on http://localhost:" + PORT);
@@ -140,10 +152,11 @@ public class BridgeServer {
         }
 
         if (!Files.exists(filePath) || Files.isDirectory(filePath)) {
-            // Try index.html for SPA-style deep links
-            Path index = filePath.resolve("index.html");
-            if (Files.exists(index)) { filePath = index; }
-            else {
+            // SPA fallback to webRoot/index.html for client-side routes (/lab, /exp1..exp6, /movie/*, etc.)
+            Path rootIndex = webRoot.resolve("index.html");
+            if (Files.exists(rootIndex)) {
+                filePath = rootIndex;
+            } else {
                 send(ex, 404, "text/plain", "Not found: " + uriPath);
                 return;
             }
