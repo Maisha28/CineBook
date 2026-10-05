@@ -17,7 +17,7 @@ if exist %OUT% rmdir /s /q %OUT%
 mkdir %OUT%
 
 echo [2/3] Compiling bridge and experiment sources...
-javac -cp "%LIB%" -d %OUT% %SRC%\*.java ..\experiment_5\*.java ..\experiment_6\*.java
+javac -cp "%LIB%" -d %OUT% %SRC%\*.java ..\experiment_5\*.java ..\experiment_6\*.java ..\experiment_7\*.java
 if %ERRORLEVEL% neq 0 (
     echo BUILD FAILED
     exit /b 1

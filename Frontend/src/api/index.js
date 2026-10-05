@@ -74,6 +74,19 @@ export const exp6 = {
   reset:        () => http.post('/exp6/reset').then(r => r.data),
 }
 
+// ── Experiment 7 (Load Balancing & Fault Tolerance) ─────────────────
+export const exp7 = {
+  status:       () => http.get('/exp7/status').then(r => r.data),
+  config:       (params) => http.post('/exp7/config', params).then(r => r.data),
+  dispatch:     (params) => http.post('/exp7/dispatch', params).then(r => r.data),
+  batch:        (params) => http.post('/exp7/batch', params).then(r => r.data),
+  health:       (nodeId, action) => http.post(`/exp7/health?nodeId=${encodeURIComponent(nodeId)}&action=${encodeURIComponent(action)}`).then(r => r.data),
+  pingAll:      () => http.post('/exp7/health?action=ping_all').then(r => r.data),
+  getLogs:      () => http.get('/exp7/logs').then(r => r.data),
+  reset:        () => http.post('/exp7/reset').then(r => r.data),
+}
+
+
 
 // ── Seat String Parser ─────────────────────────────────────────────────
 // Parses backend format: "A1 (id=seat-uuid)"

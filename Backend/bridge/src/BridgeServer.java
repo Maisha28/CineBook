@@ -100,6 +100,15 @@ public class BridgeServer {
         route(server, "/api/exp6/logs",          ex -> Exp6Handler.logs(ex));
         route(server, "/api/exp6/reset",         ex -> Exp6Handler.reset(ex));
 
+        // ── Experiment 7: Load Balancing & Fault Tolerance ───────────────────
+        route(server, "/api/exp7/status",        ex -> Exp7Handler.status(ex));
+        route(server, "/api/exp7/config",        ex -> Exp7Handler.config(ex));
+        route(server, "/api/exp7/dispatch",      ex -> Exp7Handler.dispatch(ex));
+        route(server, "/api/exp7/batch",         ex -> Exp7Handler.batch(ex));
+        route(server, "/api/exp7/health",        ex -> Exp7Handler.health(ex));
+        route(server, "/api/exp7/reset",         ex -> Exp7Handler.reset(ex));
+        route(server, "/api/exp7/logs",          ex -> Exp7Handler.logs(ex));
+
         server.setExecutor(Executors.newCachedThreadPool());
         server.start();
         System.out.println("[BridgeServer] Listening on http://localhost:" + PORT);

@@ -52,6 +52,10 @@ npm run dev
    - 5-node cluster (P1..P5 on ports 1101..1105) with node failure injection and coordinator takeover.
 5. **Experiment 5: Primary-Backup Fault Tolerance & Replication** (`Backend/experiment_5`)
    - Redundant 2-server cluster (Primary on :1201, Backup on :1202) featuring synchronous PREPARE/COMMIT 2-phase replication, client heartbeat liveness detection, automatic failover, mid-transaction fault injection, and idempotent retries via operationId deduplication. Accessible directly at `/lab?tab=replication` or `/exp5`.
+6. **Experiment 6: Distributed Two-Phase Commit (2PC) & Quorum Consensus** (`Backend/experiment_6`)
+   - Atomic 2PC multi-service transactions across Seat Reservation, Payment Gateway, and Inventory services with fault injection; configurable N, W, R Quorum Consensus demonstrating strong consistency (W + R > N) vs stale reads. Accessible directly at `/lab?tab=2pc` or `/exp6`.
+7. **Experiment 7: Load Balancing & Fault Tolerance** (`Backend/experiment_7`)
+   - Multi-server load balancer implementing Round Robin and Smooth Weighted Round Robin (3:2:1 capacity ratio) algorithms with active heartbeat health monitoring, server crash fault injection, automatic failover redirection without dropping client requests, and dynamic node recovery. Accessible directly at `/lab?tab=loadbalancer` or `/exp7`.
 
 ---
 
