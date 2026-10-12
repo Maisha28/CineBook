@@ -253,6 +253,25 @@
   }
 }
 
+/* Three Column Layout (Experiment 9: Bcast / Scatter / Gather panels) */
+.threeColGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 1100px) {
+  .threeColGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .threeColGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .testCard {
   background-color: #FFFFFF;
   border: 1px solid var(--border-light);

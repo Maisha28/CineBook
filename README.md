@@ -56,6 +56,8 @@ npm run dev
    - Atomic 2PC multi-service transactions across Seat Reservation, Payment Gateway, and Inventory services with fault injection; configurable N, W, R Quorum Consensus demonstrating strong consistency (W + R > N) vs stale reads. Accessible directly at `/lab?tab=2pc` or `/exp6`.
 7. **Experiment 7: Load Balancing & Fault Tolerance** (`Backend/experiment_7`)
    - Multi-server load balancer implementing Round Robin and Smooth Weighted Round Robin (3:2:1 capacity ratio) algorithms with active heartbeat health monitoring, server crash fault injection, automatic failover redirection without dropping client requests, and dynamic node recovery. Accessible directly at `/lab?tab=loadbalancer` or `/exp7`.
+8. **Experiment 9: MPI Collective Communication** (`Backend/experiment_9`)
+   - Models the CineBook Booking Cluster as an MPI communicator (`COMM_WORLD`): the HQ Coordinator (rank 0) runs **Broadcast**, **Scatter**, **Gather**, and **Reduce(SUM)** across regional branch-node ranks, each executing on its own thread. Includes rank crash/recover fault injection and a rebuildable 2–8 rank cluster size. Accessible directly at `/lab?tab=mpi` or `/exp9`.
 
 ---
 

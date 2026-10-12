@@ -109,6 +109,18 @@ public class BridgeServer {
         route(server, "/api/exp7/reset",         ex -> Exp7Handler.reset(ex));
         route(server, "/api/exp7/logs",          ex -> Exp7Handler.logs(ex));
 
+        // ── Experiment 9: MPI Collective Communication (Bcast/Scatter/Gather) ─
+        route(server, "/api/exp9/status",        ex -> Exp9Handler.status(ex));
+        route(server, "/api/exp9/start",         ex -> Exp9Handler.start(ex));
+        route(server, "/api/exp9/broadcast",     ex -> Exp9Handler.broadcast(ex));
+        route(server, "/api/exp9/scatter",       ex -> Exp9Handler.scatter(ex));
+        route(server, "/api/exp9/gather",        ex -> Exp9Handler.gather(ex));
+        route(server, "/api/exp9/reduce",        ex -> Exp9Handler.reduce(ex));
+        route(server, "/api/exp9/runAll",        ex -> Exp9Handler.runAll(ex));
+        route(server, "/api/exp9/fault",         ex -> Exp9Handler.fault(ex));
+        route(server, "/api/exp9/reset",         ex -> Exp9Handler.reset(ex));
+        route(server, "/api/exp9/logs",          ex -> Exp9Handler.logs(ex));
+
         server.setExecutor(Executors.newCachedThreadPool());
         server.start();
         System.out.println("[BridgeServer] Listening on http://localhost:" + PORT);

@@ -98,5 +98,34 @@ export const EXPERIMENTS_DATA = {
     ],
     concepts: ['Two-Phase Commit (2PC)', 'Phase 1 Vote Request / Prepare', 'Phase 2 Global Commit / Abort', 'Compensating Rollback', 'Quorum Consensus (N, W, R)', 'Strong vs Eventual Consistency'],
     summary: 'Orchestrates distributed multi-service transactions (Seat Booking, Payment Gateway, Inventory) using a 2-Phase Commit (2PC) coordinator with atomic prepare/vote & commit/rollback logic, alongside a Quorum Consensus engine (N, W, R) demonstrating Read-Your-Writes strong consistency guarantees.',
+  },
+  exp7: {
+    id: 'exp7',
+    num: 'Experiment 7',
+    title: 'Load Balancing & Fault Tolerance',
+    icon: '🧭',
+    badge: 'High-Availability Traffic Architecture',
+    javaFiles: [
+      'Backend/experiment_7/LoadBalancer.java',
+      'Backend/experiment_7/BackendServerNode.java',
+      'Backend/experiment_7/LoadBalancingAlgorithm.java',
+      'Backend/experiment_7/LoadBalancerDemo.java'
+    ],
+    concepts: ['Round Robin', 'Smooth Weighted Round Robin', 'Active Health Monitoring', 'Automatic Failover Redirection'],
+    summary: 'Distributes CineBook booking requests across a multi-server cluster using Round Robin and Weighted Round Robin (3:2:1), with active health monitoring and instant failover redirection when server nodes crash.',
+  },
+  exp9: {
+    id: 'exp9',
+    num: 'Experiment 9',
+    title: 'MPI Collective Communication',
+    icon: '📡',
+    badge: 'Broadcast · Scatter · Gather',
+    javaFiles: [
+      'Backend/experiment_9/MpiCommunicator.java',
+      'Backend/experiment_9/MpiProcess.java',
+      'Backend/experiment_9/CollectiveCommDemo.java'
+    ],
+    concepts: ['MPI_Bcast (Broadcast)', 'MPI_Scatter', 'MPI_Gather', 'MPI_Reduce (SUM)', 'COMM_WORLD Ranks', 'Concurrent Collective Operations'],
+    summary: 'Models the CineBook Booking Cluster as an MPI communicator (COMM_WORLD): the HQ Coordinator (rank 0) broadcasts config to all branch nodes, scatters booking workload across ranks, and gathers (or reduces) the computed results back — each rank running on its own thread to emulate real concurrent MPI processes.',
   }
 }

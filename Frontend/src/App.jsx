@@ -29,6 +29,7 @@ export default function App() {
             <Route path="/exp5" element={<Navigate to="/lab?tab=replication" replace />} />
             <Route path="/exp6" element={<Navigate to="/lab?tab=2pc" replace />} />
             <Route path="/exp7" element={<Navigate to="/lab?tab=loadbalancer" replace />} />
+            <Route path="/exp9" element={<Navigate to="/lab?tab=mpi" replace />} />
 
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/" replace />} />

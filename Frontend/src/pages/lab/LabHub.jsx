@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Server, Zap, Clock, ShieldCheck, Shield, Layers, Cpu, Database, Activity, Globe } from 'lucide-react'
+import { Server, Zap, Clock, ShieldCheck, Shield, Layers, Cpu, Database, Activity, Globe, Radio } from 'lucide-react'
 import LabExp1Rmi from './LabExp1Rmi'
 import LabExp2Concurrency from './LabExp2Concurrency'
 import LabExp3Clocks from './LabExp3Clocks'
@@ -8,6 +8,7 @@ import LabExp4Election from './LabExp4Election'
 import LabExp5Replication from './LabExp5Replication'
 import LabExp6TwoPhaseCommit from './LabExp6TwoPhaseCommit'
 import LabExp7LoadBalancing from './LabExp7LoadBalancing'
+import LabExp9Collective from './LabExp9Collective'
 import styles from './Lab.module.css'
 
 const TABS = [
@@ -17,7 +18,8 @@ const TABS = [
   { id: 'election', label: 'Bully Leader Election', icon: ShieldCheck, expNum: 'Exp 4' },
   { id: 'replication', label: 'Primary-Backup Replication', icon: Shield, expNum: 'Exp 5' },
   { id: '2pc', label: '2PC & Quorum Consensus', icon: Globe, expNum: 'Exp 6' },
-  { id: 'loadbalancer', label: 'Load Balancer & Fault Handling', icon: Layers, expNum: 'Exp 7' }
+  { id: 'loadbalancer', label: 'Load Balancer & Fault Handling', icon: Layers, expNum: 'Exp 7' },
+  { id: 'mpi', label: 'MPI Collective Communication', icon: Radio, expNum: 'Exp 9' }
 ]
 
 export default function LabHub() {
@@ -31,7 +33,9 @@ export default function LabHub() {
     exp5: 'replication',
     exp6: '2pc',
     exp7: 'loadbalancer',
-    lb: 'loadbalancer'
+    lb: 'loadbalancer',
+    exp9: 'mpi',
+    mpi: 'mpi'
   }
   const currentTab = tabAliases[rawTab] || rawTab
 
@@ -121,6 +125,7 @@ export default function LabHub() {
         {currentTab === 'replication' && <LabExp5Replication />}
         {currentTab === '2pc' && <LabExp6TwoPhaseCommit />}
         {currentTab === 'loadbalancer' && <LabExp7LoadBalancing />}
+        {currentTab === 'mpi' && <LabExp9Collective />}
       </div>
     </div>
   )

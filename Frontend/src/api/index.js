@@ -86,6 +86,20 @@ export const exp7 = {
   reset:        () => http.post('/exp7/reset').then(r => r.data),
 }
 
+// ── Experiment 9 (MPI Collective Communication: Bcast/Scatter/Gather) ──
+export const exp9 = {
+  status:       () => http.get('/exp9/status').then(r => r.data),
+  start:        (size) => http.post('/exp9/start', { size }).then(r => r.data),
+  broadcast:    (message) => http.post('/exp9/broadcast', { message }).then(r => r.data),
+  scatter:      (values) => http.post('/exp9/scatter', { values }).then(r => r.data),
+  gather:       () => http.post('/exp9/gather').then(r => r.data),
+  reduce:       () => http.post('/exp9/reduce').then(r => r.data),
+  runAll:       (message, values) => http.post('/exp9/runAll', { message, values }).then(r => r.data),
+  fault:        (rank, action) => http.post(`/exp9/fault?rank=${encodeURIComponent(rank)}&action=${encodeURIComponent(action)}`).then(r => r.data),
+  getLogs:      () => http.get('/exp9/logs').then(r => r.data),
+  reset:        () => http.post('/exp9/reset').then(r => r.data),
+}
+
 
 
 // ── Seat String Parser ─────────────────────────────────────────────────

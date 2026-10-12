@@ -1,0 +1,66 @@
+[BridgeServer] Listening on http://localhost:8080
+[BridgeServer] Serving static files from: C:\CineBook\Backend\bridge\..\..\Frontend\dist
+[19:27:52.475] [Comm-Init       ] COMM_WORLD (re)initialized with 4 ranks — rank 0 = HQ Coordinator
+[19:27:52.605] [Rank-0 (Root)   ] >>> MPI_Bcast initiated: "PROMO50 | Today's Lineup: Dune Part Two, Interstellar, Inception" -> all 3 worker ranks <<<
+[19:27:52.623] [Rank-0          ] [HQ Coordinator] Received broadcast data: "PROMO50 | Today's Lineup: Dune Part Two, Interstellar, Inception"
+[19:27:52.631] [Rank-3          ] [Bengaluru Branch] Received broadcast data: "PROMO50 | Today's Lineup: Dune Part Two, Interstellar, Inception"
+[19:27:52.637] [Rank-2          ] [Delhi Branch] Received broadcast data: "PROMO50 | Today's Lineup: Dune Part Two, Interstellar, Inception"
+[19:27:52.637] [Rank-1          ] [Mumbai Branch] Received broadcast data: "PROMO50 | Today's Lineup: Dune Part Two, Interstellar, Inception"
+[19:27:52.721] [Rank-0 (Root)   ] >>> MPI_Scatter initiated: [0, 10, 20, 30] -> 4 ranks <<<
+[19:27:52.736] [Rank-1          ] [Mumbai Branch] Received scatter value: 10
+[19:27:52.739] [Rank-3          ] [Bengaluru Branch] Received scatter value: 30
+[19:27:52.742] [Rank-0          ] [HQ Coordinator] Received scatter value: 0
+[19:27:52.745] [Rank-2          ] [Delhi Branch] Received scatter value: 20
+[19:27:52.813] [Rank-0 (Root)   ] >>> MPI_Gather initiated: collecting computed values from all ranks <<<
+[19:27:52.839] [Rank-3          ] [Bengaluru Branch] Computed value (scatter + rank) = 33
+[19:27:52.842] [Rank-2          ] [Delhi Branch] Computed value (scatter + rank) = 22
+[19:27:52.843] [Rank-1          ] [Mumbai Branch] Computed value (scatter + rank) = 11
+[19:27:52.845] [Rank-0          ] [HQ Coordinator] Computed value (scatter + rank) = 0
+[19:27:52.848] [Rank-0 (Root)   ] [Rank 0] Gathered data from all processes: [0, 11, 22, 33]
+[19:27:52.911] [Rank-0 (Root)   ] >>> MPI_Reduce(SUM) initiated across all ranks <<<
+[19:27:52.930] [Rank-1          ] [Mumbai Branch] contributed 11 to SUM reduction
+[19:27:52.938] [Rank-3          ] [Bengaluru Branch] contributed 33 to SUM reduction
+[19:27:52.939] [Rank-2          ] [Delhi Branch] contributed 22 to SUM reduction
+[19:27:52.941] [Rank-0          ] [HQ Coordinator] contributed 0 to SUM reduction
+[19:27:52.941] [Rank-0 (Root)   ] [Rank 0] MPI_Reduce(SUM) result = 66
+[19:28:00.222] [Rank-3          ] >>> FAULT: Bengaluru Branch (rank 3) went OFFLINE <<<
+[19:28:00.357] [Rank-0 (Root)   ] >>> MPI_Gather initiated: collecting computed values from all ranks <<<
+[19:28:00.360] [Rank-3          ] Bengaluru Branch is OFFLINE — contributed no value to gather
+[19:28:00.375] [Rank-2          ] [Delhi Branch] Computed value (scatter + rank) = 22
+[19:28:00.378] [Rank-1          ] [Mumbai Branch] Computed value (scatter + rank) = 11
+[19:28:00.379] [Rank-0          ] [HQ Coordinator] Computed value (scatter + rank) = 0
+[19:28:00.380] [Rank-0 (Root)   ] [Rank 0] Gathered data from all processes: [0, 11, 22, null]
+[19:28:00.449] [Rank-3          ] >>> RECOVERY: Bengaluru Branch (rank 3) back ONLINE <<<
+[19:28:00.518] [Comm-Init       ] COMM_WORLD (re)initialized with 6 ranks — rank 0 = HQ Coordinator
+[19:28:00.665] [Rank-0 (Root)   ] >>> MPI_Bcast initiated: "Hello MPI Processes!" -> all 5 worker ranks <<<
+[19:28:00.678] [Rank-4          ] [Chennai Branch] Received broadcast data: "Hello MPI Processes!"
+[19:28:00.679] [Rank-3          ] [Bengaluru Branch] Received broadcast data: "Hello MPI Processes!"
+[19:28:00.682] [Rank-5          ] [Hyderabad Branch] Received broadcast data: "Hello MPI Processes!"
+[19:28:00.684] [Rank-0          ] [HQ Coordinator] Received broadcast data: "Hello MPI Processes!"
+[19:28:00.686] [Rank-2          ] [Delhi Branch] Received broadcast data: "Hello MPI Processes!"
+[19:28:00.688] [Rank-1          ] [Mumbai Branch] Received broadcast data: "Hello MPI Processes!"
+[19:28:00.689] [Rank-0 (Root)   ] >>> MPI_Scatter initiated: [1, 2, 3, 4, 5, 6] -> 6 ranks <<<
+[19:28:00.704] [Rank-5          ] [Hyderabad Branch] Received scatter value: 6
+[19:28:00.707] [Rank-0          ] [HQ Coordinator] Received scatter value: 1
+[19:28:00.708] [Rank-3          ] [Bengaluru Branch] Received scatter value: 4
+[19:28:00.708] [Rank-4          ] [Chennai Branch] Received scatter value: 5
+[19:28:00.711] [Rank-1          ] [Mumbai Branch] Received scatter value: 2
+[19:28:00.712] [Rank-2          ] [Delhi Branch] Received scatter value: 3
+[19:28:00.713] [Rank-0 (Root)   ] >>> MPI_Gather initiated: collecting computed values from all ranks <<<
+[19:28:00.727] [Rank-3          ] [Bengaluru Branch] Computed value (scatter + rank) = 7
+[19:28:00.728] [Rank-5          ] [Hyderabad Branch] Computed value (scatter + rank) = 11
+[19:28:00.730] [Rank-4          ] [Chennai Branch] Computed value (scatter + rank) = 9
+[19:28:00.733] [Rank-1          ] [Mumbai Branch] Computed value (scatter + rank) = 3
+[19:28:00.734] [Rank-2          ] [Delhi Branch] Computed value (scatter + rank) = 5
+[19:28:00.735] [Rank-0          ] [HQ Coordinator] Computed value (scatter + rank) = 1
+[19:28:00.737] [Rank-0 (Root)   ] [Rank 0] Gathered data from all processes: [1, 3, 5, 7, 9, 11]
+[19:28:00.737] [Rank-0 (Root)   ] >>> MPI_Reduce(SUM) initiated across all ranks <<<
+[19:28:00.749] [Rank-0          ] [HQ Coordinator] contributed 1 to SUM reduction
+[19:28:00.750] [Rank-4          ] [Chennai Branch] contributed 9 to SUM reduction
+[19:28:00.755] [Rank-5          ] [Hyderabad Branch] contributed 11 to SUM reduction
+[19:28:00.757] [Rank-1          ] [Mumbai Branch] contributed 3 to SUM reduction
+[19:28:00.758] [Rank-2          ] [Delhi Branch] contributed 5 to SUM reduction
+[19:28:00.759] [Rank-3          ] [Bengaluru Branch] contributed 7 to SUM reduction
+[19:28:00.760] [Rank-0 (Root)   ] [Rank 0] MPI_Reduce(SUM) result = 36
+[19:28:00.828] [Comm-Reset      ] Communicator state cleared — 6 ranks remain registered
+[19:28:57.005] [Comm-Init       ] COMM_WORLD (re)initialized with 4 ranks — rank 0 = HQ Coordinator
