@@ -71,13 +71,31 @@ public class Exp4Handler {
         if (cluster == null) { BridgeServer.json(ex, 400, "{\"error\":\"cluster not running\"}"); return; }
         Map<String, String> q = BridgeServer.parseQuery(ex.getRequestURI().getQuery());
         String initStr = q.get("initiator");
-        if (initStr == null) { BridgeServer.json(ex, 400, "{\"error\":\"initiator required\"}"); return; }
+        if (initStr == null || initStr.isBlank()) {
+            String body = BridgeServer.bodyString(ex);
+            initStr = Exp12Handler.jsonField(body, "initiator");
+        }
         try {
-            int initiatorId = Integer.parseInt(initStr);
+            int initiatorId = 1;
+            if (initStr != null && !initStr.isBlank()) {
+                initiatorId = Integer.parseInt(initStr.trim());
+            } else {
+                for (Map.Entry<Integer, ProcessNode> e : cluster.entrySet()) {
+                    if (isAlive(e.getValue())) { initiatorId = e.getKey(); break; }
+                }
+            }
             ProcessNode initiator = cluster.get(initiatorId);
-            if (initiator == null) { BridgeServer.json(ex, 404, "{\"error\":\"initiator node not found\"}"); return; }
-            // Run election in background so HTTP can return immediately
-            new Thread(() -> initiator.startElection("UI-triggered election")).start();
+            if (initiator == null) {
+                for (Map.Entry<Integer, ProcessNode> e : cluster.entrySet()) {
+                    if (isAlive(e.getValue())) { initiator = e.getValue(); break; }
+                }
+            }
+            if (initiator == null) {
+                BridgeServer.json(ex, 400, "{\"error\":\"no alive nodes to initiate election\"}");
+                return;
+            }
+            final ProcessNode nodeToRun = initiator;
+            new Thread(() -> nodeToRun.startElection("UI-triggered election")).start();
             Thread.sleep(1500); // wait for election to settle
             BridgeServer.json(ex, 200, statusJson());
         } catch (Exception e) {

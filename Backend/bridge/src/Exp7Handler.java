@@ -110,6 +110,9 @@ public class Exp7Handler {
 
         LoadBalancer lb = getLoadBalancer();
         LoadBalancer.DispatchResult res = lb.routeRequest(seatId, userName);
+        if (res.success && seatId != null && seatId.length() == 36 && seatId.contains("-")) {
+            CatalogHandler.bookSeatAtomic(seatId, userName, res.serverId, null);
+        }
 
         StringBuilder sb = new StringBuilder("{");
         sb.append("\"requestId\":").append(BridgeServer.jsonStr(res.requestId)).append(",");

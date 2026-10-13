@@ -39,9 +39,19 @@ public class Exp3Handler {
                 sb.append(BridgeServer.jsonStr(seats.get(i)));
             }
             sb.append("]");
-            BridgeServer.json(ex, 200, "{\"seats\":" + sb + "}");
+            BridgeServer.json(ex, 200, "{\"seats\":" + sb + ",\"source\":\"rmi\"}");
         } catch (Exception e) {
-            BridgeServer.json(ex, 503, "{\"error\":" + BridgeServer.jsonStr(e.getMessage()) + "}");
+            Map<String, CatalogHandler.SeatInfo> map = CatalogHandler.getShowSeats(showId);
+            StringBuilder sb = new StringBuilder("[");
+            int count = 0;
+            for (CatalogHandler.SeatInfo s : map.values()) {
+                if ("available".equalsIgnoreCase(s.status)) {
+                    if (count++ > 0) sb.append(",");
+                    sb.append(BridgeServer.jsonStr(s.seatNumber + " (id=" + s.id + ")"));
+                }
+            }
+            sb.append("]");
+            BridgeServer.json(ex, 200, "{\"seats\":" + sb + ",\"source\":\"local-fallback\"}");
         }
     }
 
@@ -68,7 +78,14 @@ public class Exp3Handler {
                 ",\"success\":" + ok +
                 ",\"clientLamport\":" + clientTs + "}");
         } catch (Exception e) {
-            BridgeServer.json(ex, 503, "{\"error\":" + BridgeServer.jsonStr(e.getMessage()) + "}");
+            // Graceful fallback to Supabase with Lamport timestamp
+            boolean ok = CatalogHandler.bookSeatAtomic(seatId, userName, "node1", clientTs);
+            String result = ok ? "SUCCESS: Seat booked with Lamport TS=" + clientTs : "FAILED: Seat already booked";
+            BridgeServer.json(ex, 200,
+                "{\"result\":" + BridgeServer.jsonStr(result) +
+                ",\"success\":" + ok +
+                ",\"clientLamport\":" + clientTs +
+                ",\"source\":\"supabase-fallback\"}");
         }
     }
 
@@ -153,7 +170,22 @@ public class Exp3Handler {
             sb.append("}}");
             BridgeServer.json(ex, 200, sb.toString());
         } catch (Exception e) {
-            BridgeServer.json(ex, 503, "{\"error\":" + BridgeServer.jsonStr(e.getMessage()) + "}");
+            // Local fallback calculation of Berkeley clock synchronization
+            long serverTime = System.currentTimeMillis();
+            long total = serverTime;
+            int count = 1;
+            for (long t : clientTimes.values()) {
+                total += t;
+                count++;
+            }
+            long avg = total / count;
+            StringBuilder sb = new StringBuilder("{\"corrections\":{");
+            sb.append("\"SERVER\":").append(avg - serverTime);
+            for (Map.Entry<String, Long> entry : clientTimes.entrySet()) {
+                sb.append(",").append(BridgeServer.jsonStr(entry.getKey())).append(":").append(avg - entry.getValue());
+            }
+            sb.append("},\"source\":\"local-fallback\",\"avgTime\":").append(avg).append("}");
+            BridgeServer.json(ex, 200, sb.toString());
         }
     }
 

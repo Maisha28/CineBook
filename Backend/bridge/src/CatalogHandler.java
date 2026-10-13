@@ -1,91 +1,32 @@
 import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
+import java.sql.*;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * CineBook Catalog & Show Handler
- * Exposes real movie metadata, cinema directories, showtimes, and booking persistence.
+ * CineBook Supabase Catalog & Show Handler
+ * Connects directly to Supabase PostgreSQL database to serve real movies,
+ * theatres, shows, live seat statuses, and persist real bookings.
  */
 public class CatalogHandler {
 
-    public static class Movie {
-        public String id;
-        public String title;
-        public String genre;
-        public String language;
-        public String format;
-        public double rating;
-        public String duration;
-        public String certificate;
-        public String synopsis;
-        public String posterColor;
-        public String posterText;
-        public List<String> cast;
+    private static final String DB_URL = "jdbc:postgresql://aws-0-ap-south-1.pooler.supabase.com:5432/postgres";
+    private static final String DB_USER = "postgres.xjhdsoiaiqsgujwjocnx";
+    private static final String DB_PASSWORD = "MovieTicketBooker123";
 
-        public Movie(String id, String title, String genre, String language, String format,
-                     double rating, String duration, String certificate, String synopsis,
-                     String posterColor, String posterText, List<String> cast) {
-            this.id = id;
-            this.title = title;
-            this.genre = genre;
-            this.language = language;
-            this.format = format;
-            this.rating = rating;
-            this.duration = duration;
-            this.certificate = certificate;
-            this.synopsis = synopsis;
-            this.posterColor = posterColor;
-            this.posterText = posterText;
-            this.cast = cast;
-        }
+    private static Connection getConnection() throws SQLException {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException ignored) {}
+        return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
-
-    public static class Cinema {
-        public String id;
-        public String name;
-        public String location;
-        public List<String> formats;
-
-        public Cinema(String id, String name, String location, List<String> formats) {
-            this.id = id;
-            this.name = name;
-            this.location = location;
-            this.formats = formats;
-        }
-    }
-
-    public static class Show {
-        public String id;
-        public String movieId;
-        public String cinemaId;
-        public String time;
-        public String format;
-        public int price;
-
-        public Show(String id, String movieId, String cinemaId, String time, String format, int price) {
-            this.id = id;
-            this.movieId = movieId;
-            this.cinemaId = cinemaId;
-            this.time = time;
-            this.format = format;
-            this.price = price;
-        }
-    }
-
-    private static final List<Movie> MOVIES = new ArrayList<>();
-    private static final List<Cinema> CINEMAS = new ArrayList<>();
-    private static final List<Show> SHOWS = new ArrayList<>();
-
-    // Local in-memory seat map per show: showId -> (seatId -> status)
-    private static final ConcurrentHashMap<String, Map<String, SeatInfo>> SHOW_SEATS = new ConcurrentHashMap<>();
 
     public static class SeatInfo {
         public String id;
         public String seatNumber;
-        public String tier; // Recliner, Prime, Classic
+        public String tier;
         public int price;
-        public String status; // "available" or "booked"
+        public String status;
         public String bookedBy;
 
         public SeatInfo(String id, String seatNumber, String tier, int price, String status) {
@@ -97,172 +38,211 @@ public class CatalogHandler {
         }
     }
 
-    static {
-        initCatalog();
-    }
-
-    private static void initCatalog() {
-        MOVIES.add(new Movie(
-            "m-kalki",
-            "Kalki 2898 AD",
-            "Sci-Fi / Action",
-            "Hindi, Telugu, Tamil",
-            "2D, 3D, IMAX 3D",
-            8.7,
-            "3h 1m",
-            "UA",
-            "In the dystopian future of 2898 AD, the celestial avatar Kalki descends to protect humanity from the forces of supreme darkness in the city of Kasi.",
-            "#1A1A24",
-            "KALKI",
-            Arrays.asList("Prabhas", "Amitabh Bachchan", "Deepika Padukone", "Kamal Haasan")
-        ));
-
-        MOVIES.add(new Movie(
-            "m-stree2",
-            "Stree 2: Sarkate Ka Aatank",
-            "Comedy / Horror",
-            "Hindi",
-            "2D",
-            8.5,
-            "2h 29m",
-            "UA",
-            "The town of Chanderi is haunted once again, this time by a headless entity named Sarkata. Vicky and his friends summon Stree to rescue their people.",
-            "#221015",
-            "STREE 2",
-            Arrays.asList("Shraddha Kapoor", "Rajkummar Rao", "Pankaj Tripathi", "Aparshakti Khurana")
-        ));
-
-        MOVIES.add(new Movie(
-            "m-jawan",
-            "Jawan",
-            "Action / Thriller",
-            "Hindi, Tamil, Telugu",
-            "2D, IMAX",
-            8.4,
-            "2h 49m",
-            "UA",
-            "A man is driven by a personal vendetta to rectify the wrongs in society, while keeping a promise made years ago to fight against injustice.",
-            "#1A0A0A",
-            "JAWAN",
-            Arrays.asList("Shah Rukh Khan", "Nayanthara", "Vijay Sethupathi", "Deepika Padukone")
-        ));
-
-        MOVIES.add(new Movie(
-            "m-dune2",
-            "Dune: Part Two",
-            "Sci-Fi / Adventure",
-            "English, Hindi",
-            "IMAX 3D, 2D",
-            8.9,
-            "2h 46m",
-            "UA",
-            "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.",
-            "#2A1A0F",
-            "DUNE II",
-            Arrays.asList("Timothée Chalamet", "Zendaya", "Rebecca Ferguson", "Javier Bardem")
-        ));
-
-        MOVIES.add(new Movie(
-            "m-interstellar",
-            "Interstellar (Re-Release)",
-            "Sci-Fi / Drama",
-            "English",
-            "IMAX 70mm, 2D",
-            9.1,
-            "2h 49m",
-            "UA",
-            "When Earth becomes uninhabitable, a team of researchers journeys through a wormhole across spacetime in search of a new home for mankind.",
-            "#0A1128",
-            "INTERSTELLAR",
-            Arrays.asList("Matthew McConaughey", "Anne Hathaway", "Jessica Chastain", "Michael Caine")
-        ));
-
-        CINEMAS.add(new Cinema("c-pvr-palladium", "PVR INOX: Phoenix Palladium, Lower Parel", "Lower Parel, Mumbai", Arrays.asList("IMAX", "4DX", "Dolby Atmos")));
-        CINEMAS.add(new Cinema("c-inox-rcity", "INOX: R-City, Ghatkopar", "Ghatkopar West, Mumbai", Arrays.asList("Insignia", "Laser 3D", "Dolby 7.1")));
-        CINEMAS.add(new Cinema("c-cinepolis-viviana", "Cinepolis: Viviana Mall, Thane", "Eastern Express Highway, Thane", Arrays.asList("VIP", "Dolby Atmos")));
-        CINEMAS.add(new Cinema("c-pvr-infinity", "PVR ICON: Infiniti Mall, Versova", "Andheri West, Mumbai", Arrays.asList("Gold Class", "IMAX")));
-
-        // Shows
-        SHOWS.add(new Show("3fa85f64-5717-4562-b3fc-2c963f66afa6", "m-kalki", "c-pvr-palladium", "10:30 AM", "IMAX 3D", 380));
-        SHOWS.add(new Show("s-kalki-noon", "m-kalki", "c-pvr-palladium", "02:15 PM", "IMAX 3D", 450));
-        SHOWS.add(new Show("s-kalki-eve", "m-kalki", "c-inox-rcity", "06:45 PM", "Dolby Atmos", 320));
-        SHOWS.add(new Show("s-kalki-night", "m-kalki", "c-cinepolis-viviana", "10:00 PM", "VIP", 400));
-
-        SHOWS.add(new Show("s-stree-morn", "m-stree2", "c-inox-rcity", "11:15 AM", "2D", 250));
-        SHOWS.add(new Show("s-stree-eve", "m-stree2", "c-pvr-palladium", "05:30 PM", "2D", 320));
-        SHOWS.add(new Show("s-stree-night", "m-stree2", "c-pvr-infinity", "09:45 PM", "Gold Class", 420));
-
-        SHOWS.add(new Show("s-jawan-noon", "m-jawan", "c-pvr-palladium", "01:30 PM", "2D", 280));
-        SHOWS.add(new Show("s-jawan-night", "m-jawan", "c-cinepolis-viviana", "08:15 PM", "Dolby Atmos", 340));
-
-        SHOWS.add(new Show("s-dune-morn", "m-dune2", "c-pvr-palladium", "10:00 AM", "IMAX 3D", 400));
-        SHOWS.add(new Show("s-dune-eve", "m-dune2", "c-pvr-infinity", "07:00 PM", "IMAX", 450));
-
-        SHOWS.add(new Show("s-interstellar-night", "m-interstellar", "c-pvr-palladium", "09:30 PM", "IMAX", 450));
-    }
-
     /** GET /api/movies */
     public static void getMovies(HttpExchange ex) throws IOException {
-        StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < MOVIES.size(); i++) {
-            if (i > 0) sb.append(",");
-            sb.append(movieJson(MOVIES.get(i)));
-        }
-        sb.append("]");
-        BridgeServer.json(ex, 200, "{\"movies\":" + sb + "}");
-    }
+        List<Map<String, Object>> list = new ArrayList<>();
 
-    /** GET /api/movies/{id} */
-    public static void getMovieById(HttpExchange ex, String movieId) throws IOException {
-        Movie found = null;
-        for (Movie m : MOVIES) {
-            if (m.id.equalsIgnoreCase(movieId)) { found = m; break; }
-        }
-        if (found == null) {
-            BridgeServer.json(ex, 404, "{\"error\":\"Movie not found\"}");
-            return;
-        }
-        // Attach shows for this movie
-        StringBuilder sb = new StringBuilder(movieJson(found));
-        sb.setLength(sb.length() - 1); // remove closing '}'
-        sb.append(",\"shows\":[");
-        int count = 0;
-        for (Show s : SHOWS) {
-            if (s.movieId.equalsIgnoreCase(movieId)) {
-                if (count++ > 0) sb.append(",");
-                Cinema c = findCinema(s.cinemaId);
-                sb.append("{")
-                  .append("\"id\":").append(BridgeServer.jsonStr(s.id)).append(",")
-                  .append("\"cinemaId\":").append(BridgeServer.jsonStr(s.cinemaId)).append(",")
-                  .append("\"cinemaName\":").append(BridgeServer.jsonStr(c != null ? c.name : "Cinema")).append(",")
-                  .append("\"location\":").append(BridgeServer.jsonStr(c != null ? c.location : "Mumbai")).append(",")
-                  .append("\"time\":").append(BridgeServer.jsonStr(s.time)).append(",")
-                  .append("\"format\":").append(BridgeServer.jsonStr(s.format)).append(",")
-                  .append("\"price\":").append(s.price)
-                  .append("}");
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT id, title, duration_minutes, genre FROM movies ORDER BY title")) {
+
+            while (rs.next()) {
+                Map<String, Object> m = new LinkedHashMap<>();
+                String id = rs.getString("id");
+                String title = rs.getString("title");
+                m.put("id", id);
+                m.put("title", title);
+                m.put("duration", rs.getInt("duration_minutes") + " min");
+                m.put("genre", rs.getString("genre"));
+                m.put("rating", title.contains("Signal") ? 8.9 : 8.6);
+                m.put("certificate", "UA");
+
+                if (title.contains("Signal")) {
+                    m.put("poster", "/posters/the-signal.jpg");
+                    m.put("synopsis", "A deep-space observatory detects an anomalous interstellar pulse with rhythmic patterns. A specialized crew embarks on an expedition beyond the solar boundary to decipher the signal.");
+                    m.put("cast", Arrays.asList("Aura Volkov", "Kairo Jensen", "Seraphina Reed"));
+                    m.put("formats", Arrays.asList("IMAX 3D", "Dolby Atmos 2D"));
+                } else {
+                    m.put("poster", "/posters/late-monsoon.jpg");
+                    m.put("synopsis", "Set against the reflective rain-swept avenues of an old metropolis, two estranged souls cross paths under late-monsoon downpours, uncovering forgotten secrets.");
+                    m.put("cast", Arrays.asList("Liu Wei", "Anna Chen", "David Lee"));
+                    m.put("formats", Arrays.asList("Dolby Cinema", "2D"));
+                }
+                list.add(m);
             }
+        } catch (Exception e) {
+            System.err.println("[CatalogHandler] Supabase movies fetch error: " + e.getMessage());
+        }
+
+        // Output JSON
+        StringBuilder sb = new StringBuilder("{\"movies\":[");
+        for (int i = 0; i < list.size(); i++) {
+            if (i > 0) sb.append(",");
+            Map<String, Object> m = list.get(i);
+            sb.append("{")
+              .append("\"id\":").append(BridgeServer.jsonStr((String) m.get("id"))).append(",")
+              .append("\"title\":").append(BridgeServer.jsonStr((String) m.get("title"))).append(",")
+              .append("\"genre\":").append(BridgeServer.jsonStr((String) m.get("genre"))).append(",")
+              .append("\"duration\":").append(BridgeServer.jsonStr((String) m.get("duration"))).append(",")
+              .append("\"rating\":").append(m.get("rating")).append(",")
+              .append("\"certificate\":").append(BridgeServer.jsonStr((String) m.get("certificate"))).append(",")
+              .append("\"poster\":").append(BridgeServer.jsonStr((String) m.get("poster"))).append(",")
+              .append("\"synopsis\":").append(BridgeServer.jsonStr((String) m.get("synopsis"))).append(",")
+              .append("\"cast\":[");
+            List<String> cast = (List<String>) m.get("cast");
+            for (int c = 0; c < cast.size(); c++) {
+                if (c > 0) sb.append(",");
+                sb.append(BridgeServer.jsonStr(cast.get(c)));
+            }
+            sb.append("],\"formats\":[");
+            List<String> formats = (List<String>) m.get("formats");
+            for (int f = 0; f < formats.size(); f++) {
+                if (f > 0) sb.append(",");
+                sb.append(BridgeServer.jsonStr(formats.get(f)));
+            }
+            sb.append("]}");
         }
         sb.append("]}");
         BridgeServer.json(ex, 200, sb.toString());
     }
 
+    /** GET /api/movies/:id */
+    public static void getMovieById(HttpExchange ex, String id) throws IOException {
+        try (Connection conn = getConnection()) {
+            PreparedStatement ps = conn.prepareStatement("SELECT id, title, duration_minutes, genre FROM movies WHERE id = ?::uuid");
+            ps.setString(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String title = rs.getString("title");
+                    String poster = title.contains("Signal") ? "/posters/the-signal.jpg" : "/posters/late-monsoon.jpg";
+                    String synopsis = title.contains("Signal")
+                        ? "A deep-space observatory detects an anomalous interstellar pulse with rhythmic patterns. A specialized crew embarks on an expedition beyond the solar boundary to decipher the signal."
+                        : "Set against the reflective rain-swept avenues of an old metropolis, two estranged souls cross paths under late-monsoon downpours.";
+
+                    // Fetch shows for this movie
+                    StringBuilder showsSb = new StringBuilder("[");
+                    int sCount = 0;
+                    String showSql = "SELECT s.id, s.show_time, s.total_seats, t.id AS theatre_id, t.name AS theatre_name, t.location "
+                                   + "FROM shows s JOIN theatres t ON s.theatre_id = t.id WHERE s.movie_id = ?::uuid ORDER BY s.show_time";
+                    try (PreparedStatement psShows = conn.prepareStatement(showSql)) {
+                        psShows.setString(1, id);
+                        try (ResultSet rsShows = psShows.executeQuery()) {
+                            while (rsShows.next()) {
+                                if (sCount++ > 0) showsSb.append(",");
+                                String format = title.contains("Signal") ? "IMAX 3D" : "Dolby 2D";
+                                int price = title.contains("Signal") ? 380 : 280;
+                                showsSb.append("{")
+                                       .append("\"id\":").append(BridgeServer.jsonStr(rsShows.getString("id"))).append(",")
+                                       .append("\"cinemaId\":").append(BridgeServer.jsonStr(rsShows.getString("theatre_id"))).append(",")
+                                       .append("\"cinemaName\":").append(BridgeServer.jsonStr(rsShows.getString("theatre_name"))).append(",")
+                                       .append("\"location\":").append(BridgeServer.jsonStr(rsShows.getString("location"))).append(",")
+                                       .append("\"time\":").append(BridgeServer.jsonStr(rsShows.getString("show_time"))).append(",")
+                                       .append("\"format\":").append(BridgeServer.jsonStr(format)).append(",")
+                                       .append("\"price\":").append(price)
+                                       .append("}");
+                            }
+                        }
+                    }
+                    showsSb.append("]");
+
+                    String json = "{"
+                        + "\"id\":" + BridgeServer.jsonStr(rs.getString("id")) + ","
+                        + "\"title\":" + BridgeServer.jsonStr(title) + ","
+                        + "\"genre\":" + BridgeServer.jsonStr(rs.getString("genre")) + ","
+                        + "\"duration\":" + BridgeServer.jsonStr(rs.getInt("duration_minutes") + " min") + ","
+                        + "\"rating\":" + (title.contains("Signal") ? 8.9 : 8.6) + ","
+                        + "\"certificate\":\"UA\","
+                        + "\"poster\":" + BridgeServer.jsonStr(poster) + ","
+                        + "\"synopsis\":" + BridgeServer.jsonStr(synopsis) + ","
+                        + "\"shows\":" + showsSb.toString()
+                        + "}";
+                    BridgeServer.json(ex, 200, json);
+                    return;
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("[CatalogHandler] Supabase getMovieById error: " + e.getMessage());
+        }
+        BridgeServer.json(ex, 404, "{\"error\":\"Movie not found\"}");
+    }
+
+    /** GET /api/supabase/table?name=movies|theatres|shows|seats|bookings */
+    public static void getTableData(HttpExchange ex) throws IOException {
+        Map<String, String> q = BridgeServer.parseQuery(ex.getRequestURI().getQuery());
+        String tableName = q.get("name");
+        if (tableName == null || tableName.isBlank()) tableName = "movies";
+
+        Set<String> allowed = new HashSet<>(Arrays.asList("movies", "theatres", "shows", "seats", "bookings"));
+        if (!allowed.contains(tableName.toLowerCase())) {
+            BridgeServer.json(ex, 400, "{\"error\":\"Invalid table name\"}");
+            return;
+        }
+
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName + " ORDER BY 1 LIMIT 50")) {
+
+            ResultSetMetaData md = rs.getMetaData();
+            int cols = md.getColumnCount();
+
+            StringBuilder colsSb = new StringBuilder("[");
+            for (int i = 1; i <= cols; i++) {
+                if (i > 1) colsSb.append(",");
+                colsSb.append("{")
+                      .append("\"name\":").append(BridgeServer.jsonStr(md.getColumnName(i))).append(",")
+                      .append("\"type\":").append(BridgeServer.jsonStr(md.getColumnTypeName(i)))
+                      .append("}");
+            }
+            colsSb.append("]");
+
+            StringBuilder rowsSb = new StringBuilder("[");
+            int rCount = 0;
+            while (rs.next()) {
+                if (rCount++ > 0) rowsSb.append(",");
+                rowsSb.append("{");
+                for (int i = 1; i <= cols; i++) {
+                    if (i > 1) rowsSb.append(",");
+                    String val = rs.getString(i);
+                    rowsSb.append(BridgeServer.jsonStr(md.getColumnName(i))).append(":").append(BridgeServer.jsonStr(val));
+                }
+                rowsSb.append("}");
+            }
+            rowsSb.append("]");
+
+            String json = "{"
+                + "\"table\":" + BridgeServer.jsonStr(tableName) + ","
+                + "\"columns\":" + colsSb + ","
+                + "\"rows\":" + rowsSb + ","
+                + "\"total\":" + rCount
+                + "}";
+            BridgeServer.json(ex, 200, json);
+        } catch (Exception e) {
+            BridgeServer.json(ex, 500, "{\"error\":" + BridgeServer.jsonStr(e.getMessage()) + "}");
+        }
+    }
+
     /** GET /api/cinemas */
     public static void getCinemas(HttpExchange ex) throws IOException {
         StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < CINEMAS.size(); i++) {
-            Cinema c = CINEMAS.get(i);
-            if (i > 0) sb.append(",");
-            sb.append("{")
-              .append("\"id\":").append(BridgeServer.jsonStr(c.id)).append(",")
-              .append("\"name\":").append(BridgeServer.jsonStr(c.name)).append(",")
-              .append("\"location\":").append(BridgeServer.jsonStr(c.location)).append(",")
-              .append("\"formats\":[");
-            for (int f = 0; f < c.formats.size(); f++) {
-                if (f > 0) sb.append(",");
-                sb.append(BridgeServer.jsonStr(c.formats.get(f)));
+        int count = 0;
+
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT id, name, location, server_node FROM theatres ORDER BY name")) {
+
+            while (rs.next()) {
+                if (count++ > 0) sb.append(",");
+                sb.append("{")
+                  .append("\"id\":").append(BridgeServer.jsonStr(rs.getString("id"))).append(",")
+                  .append("\"name\":").append(BridgeServer.jsonStr(rs.getString("name"))).append(",")
+                  .append("\"location\":").append(BridgeServer.jsonStr(rs.getString("location"))).append(",")
+                  .append("\"serverNode\":").append(BridgeServer.jsonStr(rs.getString("server_node")))
+                  .append("}");
             }
-            sb.append("]}");
+        } catch (Exception e) {
+            System.err.println("[CatalogHandler] Supabase theatres error: " + e.getMessage());
         }
+
         sb.append("]");
         BridgeServer.json(ex, 200, "{\"cinemas\":" + sb + "}");
     }
@@ -270,108 +250,279 @@ public class CatalogHandler {
     /** GET /api/shows */
     public static void getShows(HttpExchange ex) throws IOException {
         StringBuilder sb = new StringBuilder("[");
-        for (int i = 0; i < SHOWS.size(); i++) {
-            Show s = SHOWS.get(i);
-            if (i > 0) sb.append(",");
-            Cinema c = findCinema(s.cinemaId);
-            Movie m = findMovie(s.movieId);
-            sb.append("{")
-              .append("\"id\":").append(BridgeServer.jsonStr(s.id)).append(",")
-              .append("\"movieId\":").append(BridgeServer.jsonStr(s.movieId)).append(",")
-              .append("\"movieTitle\":").append(BridgeServer.jsonStr(m != null ? m.title : "")).append(",")
-              .append("\"cinemaId\":").append(BridgeServer.jsonStr(s.cinemaId)).append(",")
-              .append("\"cinemaName\":").append(BridgeServer.jsonStr(c != null ? c.name : "")).append(",")
-              .append("\"time\":").append(BridgeServer.jsonStr(s.time)).append(",")
-              .append("\"format\":").append(BridgeServer.jsonStr(s.format)).append(",")
-              .append("\"price\":").append(s.price)
-              .append("}");
+        int count = 0;
+
+        String sql = "SELECT s.id, s.movie_id, m.title AS movie_title, s.theatre_id, t.name AS theatre_name, "
+                   + "s.show_time, s.total_seats "
+                   + "FROM shows s "
+                   + "JOIN movies m ON s.movie_id = m.id "
+                   + "JOIN theatres t ON s.theatre_id = t.id "
+                   + "ORDER BY s.show_time";
+
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                if (count++ > 0) sb.append(",");
+                String title = rs.getString("movie_title");
+                int price = title.contains("Signal") ? 380 : 280;
+                String format = title.contains("Signal") ? "IMAX 3D" : "Dolby 2D";
+
+                sb.append("{")
+                  .append("\"id\":").append(BridgeServer.jsonStr(rs.getString("id"))).append(",")
+                  .append("\"movieId\":").append(BridgeServer.jsonStr(rs.getString("movie_id"))).append(",")
+                  .append("\"movieTitle\":").append(BridgeServer.jsonStr(title)).append(",")
+                  .append("\"cinemaId\":").append(BridgeServer.jsonStr(rs.getString("theatre_id"))).append(",")
+                  .append("\"cinemaName\":").append(BridgeServer.jsonStr(rs.getString("theatre_name"))).append(",")
+                  .append("\"time\":").append(BridgeServer.jsonStr(rs.getString("show_time"))).append(",")
+                  .append("\"totalSeats\":").append(rs.getInt("total_seats")).append(",")
+                  .append("\"format\":").append(BridgeServer.jsonStr(format)).append(",")
+                  .append("\"price\":").append(price)
+                  .append("}");
+            }
+        } catch (Exception e) {
+            System.err.println("[CatalogHandler] Supabase shows error: " + e.getMessage());
         }
+
         sb.append("]");
         BridgeServer.json(ex, 200, "{\"shows\":" + sb + "}");
     }
 
+    /** GET /api/seats?showId=<uuid> */
+    public static void getSeats(HttpExchange ex) throws IOException {
+        Map<String, String> q = BridgeServer.parseQuery(ex.getRequestURI().getQuery());
+        String showId = q.get("showId");
+        if (showId == null || showId.isEmpty()) {
+            // Default to first show if not specified
+            showId = "8fd0925d-364b-485e-837c-b2aaea27fa56";
+        }
+
+        StringBuilder sb = new StringBuilder("[");
+        int count = 0;
+
+        String sql = "SELECT id, seat_number, status FROM seats WHERE show_id = ?::uuid ORDER BY seat_number, id";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, showId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    if (count++ > 0) sb.append(",");
+                    String seatNum = rs.getString("seat_number");
+                    String tier = seatNum.startsWith("A") ? "Recliner" : "Prime";
+                    int price = seatNum.startsWith("A") ? 420 : 320;
+
+                    sb.append("{")
+                      .append("\"id\":").append(BridgeServer.jsonStr(rs.getString("id"))).append(",")
+                      .append("\"seatNumber\":").append(BridgeServer.jsonStr(seatNum)).append(",")
+                      .append("\"tier\":").append(BridgeServer.jsonStr(tier)).append(",")
+                      .append("\"price\":").append(price).append(",")
+                      .append("\"status\":").append(BridgeServer.jsonStr(rs.getString("status")))
+                      .append("}");
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("[CatalogHandler] Supabase seats query error: " + e.getMessage());
+        }
+
+        sb.append("]");
+        BridgeServer.json(ex, 200, "{\"showId\":" + BridgeServer.jsonStr(showId) + ",\"seats\":" + sb + ",\"source\":\"supabase\"}");
+    }
+
+    /** Atomically reserve a seat in Supabase and create a booking */
+    public static boolean bookSeatAtomic(String seatId, String userName, String serverNode, Long lamportTs) {
+        try (Connection conn = getConnection()) {
+            conn.setAutoCommit(false);
+            String updateSql = "UPDATE seats SET status = 'booked' WHERE id = ?::uuid AND status = 'available'";
+            try (PreparedStatement psUpdate = conn.prepareStatement(updateSql)) {
+                psUpdate.setString(1, seatId);
+                int updated = psUpdate.executeUpdate();
+                if (updated == 0) {
+                    conn.rollback();
+                    return false;
+                }
+            }
+
+            String bookingId = UUID.randomUUID().toString();
+            String insertSql = "INSERT INTO bookings (id, seat_id, user_name, booked_at, server_node, lamport_timestamp) "
+                             + "VALUES (?::uuid, ?::uuid, ?, NOW(), ?, ?)";
+            try (PreparedStatement psInsert = conn.prepareStatement(insertSql)) {
+                psInsert.setString(1, bookingId);
+                psInsert.setString(2, seatId);
+                psInsert.setString(3, userName);
+                psInsert.setString(4, (serverNode != null && !serverNode.isEmpty()) ? serverNode : "node1");
+                if (lamportTs != null) {
+                    psInsert.setLong(5, lamportTs);
+                } else {
+                    psInsert.setNull(5, Types.INTEGER);
+                }
+                psInsert.executeUpdate();
+            }
+
+            conn.commit();
+            return true;
+        } catch (Exception e) {
+            System.err.println("[CatalogHandler] Supabase atomic booking error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /** POST /api/book */
+    public static void bookSeatDirect(HttpExchange ex) throws IOException {
+        if (!ex.getRequestMethod().equals("POST")) { BridgeServer.json(ex, 405, "{\"error\":\"POST only\"}"); return; }
+        String body = BridgeServer.bodyString(ex);
+        String seatId = jsonField(body, "seatId");
+        String userName = jsonField(body, "userName");
+        String serverNode = jsonField(body, "serverNode");
+        if (serverNode == null || serverNode.isEmpty()) serverNode = "node1";
+
+        if (seatId == null || userName == null) {
+            BridgeServer.json(ex, 400, "{\"error\":\"seatId and userName required\"}");
+            return;
+        }
+
+        boolean ok = bookSeatAtomic(seatId, userName, serverNode, null);
+        if (ok) {
+            BridgeServer.json(ex, 200, "{\"success\":true,\"seatId\":" + BridgeServer.jsonStr(seatId)
+                + ",\"userName\":" + BridgeServer.jsonStr(userName)
+                + ",\"serverNode\":" + BridgeServer.jsonStr(serverNode)
+                + ",\"message\":\"Booking permanently confirmed in Supabase!\"}");
+        } else {
+            BridgeServer.json(ex, 200, "{\"success\":false,\"message\":\"Seat is no longer available (already booked)\"}");
+        }
+    }
+
+    /** GET /api/bookings */
+    public static void getBookings(HttpExchange ex) throws IOException {
+        StringBuilder sb = new StringBuilder("[");
+        int count = 0;
+
+        String sql = "SELECT b.id, b.seat_id, b.user_name, b.booked_at, b.server_node, b.lamport_timestamp, "
+                   + "s.seat_number, sh.id AS show_id, m.title AS movie_title "
+                   + "FROM bookings b "
+                   + "LEFT JOIN seats s ON b.seat_id = s.id "
+                   + "LEFT JOIN shows sh ON s.show_id = sh.id "
+                   + "LEFT JOIN movies m ON sh.movie_id = m.id "
+                   + "ORDER BY b.booked_at DESC LIMIT 50";
+
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                if (count++ > 0) sb.append(",");
+                sb.append("{")
+                  .append("\"id\":").append(BridgeServer.jsonStr(rs.getString("id"))).append(",")
+                  .append("\"seatId\":").append(BridgeServer.jsonStr(rs.getString("seat_id"))).append(",")
+                  .append("\"userName\":").append(BridgeServer.jsonStr(rs.getString("user_name"))).append(",")
+                  .append("\"bookedAt\":").append(BridgeServer.jsonStr(rs.getString("booked_at"))).append(",")
+                  .append("\"serverNode\":").append(BridgeServer.jsonStr(rs.getString("server_node"))).append(",")
+                  .append("\"seatNumber\":").append(BridgeServer.jsonStr(rs.getString("seat_number"))).append(",")
+                  .append("\"movieTitle\":").append(BridgeServer.jsonStr(rs.getString("movie_title") != null ? rs.getString("movie_title") : "The Signal"))
+                  .append("}");
+            }
+        } catch (Exception e) {
+            System.err.println("[CatalogHandler] Supabase bookings query error: " + e.getMessage());
+        }
+
+        sb.append("]");
+        BridgeServer.json(ex, 200, "{\"bookings\":" + sb + ",\"total\":" + count + "}");
+    }
+
+    /** GET /api/supabase/inspect */
+    public static void inspectSupabase(HttpExchange ex) throws IOException {
+        StringBuilder sb = new StringBuilder("{");
+
+        try (Connection conn = getConnection()) {
+            DatabaseMetaData meta = conn.getMetaData();
+            sb.append("\"database\":").append(BridgeServer.jsonStr(meta.getDatabaseProductName() + " " + meta.getDatabaseProductVersion())).append(",");
+
+            String[] tables = {"movies", "theatres", "shows", "seats", "bookings"};
+            sb.append("\"tables\":{");
+
+            for (int i = 0; i < tables.length; i++) {
+                String t = tables[i];
+                if (i > 0) sb.append(",");
+                int rowCount = 0;
+                try (Statement stmt = conn.createStatement();
+                     ResultSet rs = stmt.executeQuery("SELECT count(*) FROM " + t)) {
+                    if (rs.next()) rowCount = rs.getInt(1);
+                }
+                sb.append(BridgeServer.jsonStr(t)).append(":").append(rowCount);
+            }
+            sb.append("}}");
+        } catch (Exception e) {
+            sb.append("\"error\":").append(BridgeServer.jsonStr(e.getMessage())).append("}");
+        }
+
+        BridgeServer.json(ex, 200, sb.toString());
+    }
+
     /** GET /api/system/status */
     public static void getSystemStatus(HttpExchange ex) throws IOException {
+        boolean dbLive = false;
+        try (Connection conn = getConnection()) {
+            dbLive = conn.isValid(2);
+        } catch (Exception ignored) {}
+
         String json = "{"
             + "\"bridge\":\"online\","
             + "\"port\":8080,"
             + "\"rmiPort\":1099,"
-            + "\"clusterNodes\":5,"
-            + "\"database\":\"PostgreSQL (Resilient Fallback Active)\","
+            + "\"database\":\"PostgreSQL (Supabase Live Active)\","
+            + "\"supabaseConnected\":" + dbLive + ","
             + "\"timestamp\":" + System.currentTimeMillis()
             + "}";
         BridgeServer.json(ex, 200, json);
     }
 
-    /** Helper to get or generate seats for a show */
+    /** Helper for Exp12Handler fallback compatibility */
     public static Map<String, SeatInfo> getShowSeats(String showId) {
-        return SHOW_SEATS.computeIfAbsent(showId, id -> {
-            Map<String, SeatInfo> map = new LinkedHashMap<>();
-            String[] rows = {"A", "B", "C", "D", "E", "F"};
-            for (String row : rows) {
-                String tier = "Classic";
-                int price = 220;
-                if (row.equals("A")) { tier = "Recliner"; price = 450; }
-                else if (row.equals("B") || row.equals("C")) { tier = "Prime"; price = 320; }
-
-                for (int col = 1; col <= 8; col++) {
-                    String seatNum = row + col;
-                    String seatId = "seat-" + id.substring(0, Math.min(8, id.length())) + "-" + seatNum;
-                    // Pre-book a couple of seats for realistic display
-                    String status = (row.equals("C") && (col == 3 || col == 4)) ? "booked" : "available";
-                    map.put(seatId, new SeatInfo(seatId, seatNum, tier, price, status));
+        Map<String, SeatInfo> map = new LinkedHashMap<>();
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT id, seat_number, status FROM seats WHERE show_id = ?::uuid ORDER BY seat_number")) {
+            ps.setString(1, showId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String seatId = rs.getString("id");
+                    String seatNum = rs.getString("seat_number");
+                    String status = rs.getString("status");
+                    map.put(seatId, new SeatInfo(seatId, seatNum, "Prime", 320, status));
                 }
             }
-            return map;
-        });
+        } catch (Exception ignored) {}
+        return map;
     }
 
-    /** Book a seat in the fallback store */
-    public static synchronized String bookFallbackSeat(String seatId, String userName) {
-        for (Map<String, SeatInfo> seats : SHOW_SEATS.values()) {
-            SeatInfo seat = seats.get(seatId);
-            if (seat != null) {
-                if ("booked".equalsIgnoreCase(seat.status)) {
-                    return "FAILED: seat not available";
+    public static String bookFallbackSeat(String seatId, String userName) {
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement("UPDATE seats SET status = 'booked' WHERE id = ?::uuid AND status = 'available'")) {
+            ps.setString(1, seatId);
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                try (PreparedStatement ps2 = conn.prepareStatement("INSERT INTO bookings (id, seat_id, user_name, booked_at, server_node) VALUES (?::uuid, ?::uuid, ?, NOW(), 'fallback')")) {
+                    ps2.setString(1, UUID.randomUUID().toString());
+                    ps2.setString(2, seatId);
+                    ps2.setString(3, userName);
+                    ps2.executeUpdate();
                 }
-                seat.status = "booked";
-                seat.bookedBy = userName;
-                return "SUCCESS: seat " + seat.seatNumber + " booked for " + userName;
+                return "SUCCESS: seat booked for " + userName;
             }
-        }
-        // If seatId wasn't already in map, accept and mark booked
-        return "SUCCESS: seat booked for " + userName;
+        } catch (Exception ignored) {}
+        return "FAILED: seat not available";
     }
 
-    private static Cinema findCinema(String cinemaId) {
-        for (Cinema c : CINEMAS) if (c.id.equalsIgnoreCase(cinemaId)) return c;
-        return null;
-    }
-
-    private static Movie findMovie(String movieId) {
-        for (Movie m : MOVIES) if (m.id.equalsIgnoreCase(movieId)) return m;
-        return null;
-    }
-
-    private static String movieJson(Movie m) {
-        StringBuilder sb = new StringBuilder("{");
-        sb.append("\"id\":").append(BridgeServer.jsonStr(m.id)).append(",")
-          .append("\"title\":").append(BridgeServer.jsonStr(m.title)).append(",")
-          .append("\"genre\":").append(BridgeServer.jsonStr(m.genre)).append(",")
-          .append("\"language\":").append(BridgeServer.jsonStr(m.language)).append(",")
-          .append("\"format\":").append(BridgeServer.jsonStr(m.format)).append(",")
-          .append("\"rating\":").append(m.rating).append(",")
-          .append("\"duration\":").append(BridgeServer.jsonStr(m.duration)).append(",")
-          .append("\"certificate\":").append(BridgeServer.jsonStr(m.certificate)).append(",")
-          .append("\"synopsis\":").append(BridgeServer.jsonStr(m.synopsis)).append(",")
-          .append("\"posterColor\":").append(BridgeServer.jsonStr(m.posterColor)).append(",")
-          .append("\"posterText\":").append(BridgeServer.jsonStr(m.posterText)).append(",")
-          .append("\"cast\":[");
-        for (int i = 0; i < m.cast.size(); i++) {
-            if (i > 0) sb.append(",");
-            sb.append(BridgeServer.jsonStr(m.cast.get(i)));
-        }
-        sb.append("]}");
-        return sb.toString();
+    private static String jsonField(String json, String key) {
+        if (json == null) return null;
+        int idx = json.indexOf("\"" + key + "\"");
+        if (idx == -1) return null;
+        int colon = json.indexOf(":", idx);
+        if (colon == -1) return null;
+        int start = colon + 1;
+        while (start < json.length() && (json.charAt(start) == ' ' || json.charAt(start) == '"')) start++;
+        int end = start;
+        while (end < json.length() && json.charAt(end) != '"' && json.charAt(end) != ',' && json.charAt(end) != '}') end++;
+        return json.substring(start, end).trim();
     }
 }

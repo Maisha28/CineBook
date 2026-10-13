@@ -97,6 +97,9 @@ public class Exp6Handler {
         double amount = (amountStr != null) ? Double.parseDouble(amountStr) : 450.0;
 
         TwoPhaseCommitCoordinator.TransactionResult res = getCoordinator().executeTransaction(txId, seatId, userName, amount);
+        if (res.success && "COMMIT".equals(res.globalDecision) && seatId != null && seatId.length() == 36 && seatId.contains("-")) {
+            CatalogHandler.bookSeatAtomic(seatId, userName, "2pc-coordinator", null);
+        }
 
         StringBuilder sb = new StringBuilder("{");
         sb.append("\"transactionId\":").append(BridgeServer.jsonStr(res.transactionId)).append(",");

@@ -3,12 +3,17 @@ import axios from 'axios'
 // All requests go to /api/* — Vite proxies them to http://localhost:8080
 const http = axios.create({ baseURL: '/api', timeout: 15000 })
 
-// ── Catalog & Booking API ───────────────────────────────────────────────
+// ── Catalog & Booking API (Direct Supabase) ──────────────────────────────
 export const catalog = {
   getMovies:       () => http.get('/movies').then(r => r.data),
   getMovieById:    (id) => http.get(`/movies/${id}`).then(r => r.data),
   getCinemas:      () => http.get('/cinemas').then(r => r.data),
   getShows:        () => http.get('/shows').then(r => r.data),
+  getSeats:        (showId) => http.get(`/seats?showId=${encodeURIComponent(showId || '')}`).then(r => r.data),
+  bookSeat:        (params) => http.post('/book', params).then(r => r.data),
+  getBookings:     () => http.get('/bookings').then(r => r.data),
+  inspectSupabase: () => http.get('/supabase/inspect').then(r => r.data),
+  getTableData:    (name) => http.get(`/supabase/table?name=${encodeURIComponent(name || 'movies')}`).then(r => r.data),
   getSystemStatus: () => http.get('/system/status').then(r => r.data),
 }
 

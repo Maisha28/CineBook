@@ -228,8 +228,8 @@ public class Exp5Handler {
         if (!ex.getRequestMethod().equals("GET")) { BridgeServer.json(ex, 405, "{\"error\":\"GET only\"}"); return; }
         Map<String, String> q = BridgeServer.parseQuery(ex.getRequestURI().getQuery());
         String showId = q.get("showId");
-        if (showId == null || showId.isEmpty()) {
-            showId = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+        if (showId == null || showId.isEmpty() || "3fa85f64-5717-4562-b3fc-2c963f66afa6".equals(showId)) {
+            showId = "8fd0925d-364b-485e-837c-b2aaea27fa56";
         }
 
         try {

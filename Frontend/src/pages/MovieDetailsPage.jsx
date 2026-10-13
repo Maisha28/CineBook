@@ -84,14 +84,24 @@ export default function MovieDetailsPage() {
             {/* Poster Card */}
             <div
               className={styles.posterCard}
-              style={{ backgroundColor: movie.posterColor || '#1A1A24' }}
+              style={{ backgroundColor: movie.posterColor || '#1A1A24', overflow: 'hidden', position: 'relative' }}
             >
-              <div className={styles.posterPattern} />
-              <div className={styles.posterInner}>
-                <span className={styles.posterBadge}>{movie.format.split(',')[0]}</span>
-                <div className={styles.posterText}>{movie.posterText || movie.title}</div>
-                <div className={styles.posterCert}>{movie.certificate}</div>
-              </div>
+              {movie.poster ? (
+                <img
+                  src={movie.poster}
+                  alt={movie.title}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }}
+                />
+              ) : (
+                <>
+                  <div className={styles.posterPattern} />
+                  <div className={styles.posterInner}>
+                    <span className={styles.posterBadge}>{(movie.format || 'IMAX').split(',')[0]}</span>
+                    <div className={styles.posterText}>{movie.posterText || movie.title}</div>
+                    <div className={styles.posterCert}>{movie.certificate || 'UA'}</div>
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Information Column */}
@@ -101,15 +111,15 @@ export default function MovieDetailsPage() {
               <div className={styles.ratingRow}>
                 <div className={styles.ratingBox}>
                   <Star size={16} fill="#D97706" color="#D97706" />
-                  <strong>{movie.rating}</strong>
+                  <strong>{movie.rating || '8.8'}</strong>
                   <span>/10</span>
                 </div>
                 <span className={styles.votesText}>Verified Audience Rating</span>
               </div>
 
               <div className={styles.tagsRow}>
-                <span className={styles.formatTag}>{movie.format}</span>
-                <span className={styles.langTag}>{movie.language}</span>
+                <span className={styles.formatTag}>{movie.format || (movie.formats ? movie.formats.join(' • ') : 'IMAX 3D • Dolby Atmos')}</span>
+                <span className={styles.langTag}>{movie.language || 'English / Hindi'}</span>
               </div>
 
               <div className={styles.metaRow}>

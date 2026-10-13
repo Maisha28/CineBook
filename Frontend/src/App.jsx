@@ -5,6 +5,8 @@ import Home from './pages/Home'
 import MovieDetailsPage from './pages/MovieDetailsPage'
 import SeatBookingPage from './pages/SeatBookingPage'
 import BookingConfirmationPage from './pages/BookingConfirmationPage'
+import LiveBookingsPage from './pages/LiveBookingsPage'
+import SupabaseExplorerPage from './pages/SupabaseExplorerPage'
 import LabHub from './pages/lab/LabHub'
 import { ToastProvider } from './components/Toast'
 
@@ -19,6 +21,8 @@ export default function App() {
             <Route path="/movie/:id" element={<MovieDetailsPage />} />
             <Route path="/book/:showId" element={<SeatBookingPage />} />
             <Route path="/booking/confirmation" element={<BookingConfirmationPage />} />
+            <Route path="/bookings" element={<LiveBookingsPage />} />
+            <Route path="/supabase" element={<SupabaseExplorerPage />} />
             <Route path="/lab" element={<LabHub />} />
 
             {/* Backward-compatible redirects */}

@@ -1,18 +1,17 @@
-import { useState } from 'react'
-import { exp1, parseSeat } from '../../api'
+import { useState, useEffect } from 'react'
+import { exp1, catalog, parseSeat } from '../../api'
 import { useToast } from '../../components/Toast'
 import { Server, ArrowRight, Play, CheckCircle2, Shield, RefreshCw } from 'lucide-react'
 import styles from './Lab.module.css'
 
 const SAMPLE_SHOWS = [
-  { id: '3fa85f64-5717-4562-b3fc-2c963f66afa6', label: 'Kalki 2898 AD (10:30 AM • PVR Palladium)' },
-  { id: 's-kalki-eve', label: 'Kalki 2898 AD (06:45 PM • INOX R-City)' },
-  { id: 's-stree-morn', label: 'Stree 2 (11:15 AM • INOX R-City)' },
-  { id: 's-jawan-noon', label: 'Jawan (01:30 PM • PVR Palladium)' }
+  { id: '8fd0925d-364b-485e-837c-b2aaea27fa56', label: 'The Signal (IMAX 3D • CineBook Downtown)' },
+  { id: 'a8bcfd71-2756-4c6d-ab1d-d404036db92a', label: 'Late Monsoon (Dolby 2D • CineBook Mall)' }
 ]
 
 export default function LabExp1Rmi() {
   const toast = useToast()
+  const [showsList, setShowsList] = useState(SAMPLE_SHOWS)
   const [selectedShow, setSelectedShow] = useState(SAMPLE_SHOWS[0].id)
   const [seats, setSeats] = useState([])
   const [targetSeat, setTargetSeat] = useState('')
@@ -21,6 +20,19 @@ export default function LabExp1Rmi() {
   const [booking, setBooking] = useState(false)
   const [bookingResult, setBookingResult] = useState(null)
   const [source, setSource] = useState('')
+
+  useEffect(() => {
+    catalog.getShows().then(res => {
+      if (res?.shows?.length > 0) {
+        const formatted = res.shows.map(s => ({
+          id: s.id,
+          label: `${s.movieTitle} (${s.format || '2D'} • ${s.cinemaName})`
+        }))
+        setShowsList(formatted)
+        setSelectedShow(formatted[0].id)
+      }
+    }).catch(() => {})
+  }, [])
 
   async function fetchSeats() {
     setFetching(true)
@@ -128,7 +140,7 @@ export default function LabExp1Rmi() {
               value={selectedShow}
               onChange={e => setSelectedShow(e.target.value)}
             >
-              {SAMPLE_SHOWS.map(s => (
+              {showsList.map(s => (
                 <option key={s.id} value={s.id}>{s.label}</option>
               ))}
             </select>

@@ -46,11 +46,16 @@ public class BridgeServer {
         // ── Static file handler ──────────────────────────────────────────────
         route(server, "/", BridgeServer::handleStatic);
 
-        // ── Catalog & Ticketing API ─────────────────────────────────────────
-        route(server, "/api/movies",       BridgeServer::handleMovieRoute);
-        route(server, "/api/cinemas",      CatalogHandler::getCinemas);
-        route(server, "/api/shows",        CatalogHandler::getShows);
-        route(server, "/api/system/status",CatalogHandler::getSystemStatus);
+        // ── Catalog & Ticketing API (Direct Supabase) ────────────────────────
+        route(server, "/api/movies",          BridgeServer::handleMovieRoute);
+        route(server, "/api/cinemas",         CatalogHandler::getCinemas);
+        route(server, "/api/shows",           CatalogHandler::getShows);
+        route(server, "/api/seats",           CatalogHandler::getSeats);
+        route(server, "/api/book",            CatalogHandler::bookSeatDirect);
+        route(server, "/api/bookings",        CatalogHandler::getBookings);
+        route(server, "/api/supabase/inspect",CatalogHandler::inspectSupabase);
+        route(server, "/api/supabase/table",  CatalogHandler::getTableData);
+        route(server, "/api/system/status",   CatalogHandler::getSystemStatus);
 
         // ── Experiment 1 & 2: RMI booking API ───────────────────────────────
         route(server, "/api/exp1/seats",   ex -> Exp12Handler.seats(ex, 1));

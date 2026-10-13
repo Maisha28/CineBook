@@ -1,16 +1,36 @@
-import { useState } from 'react'
-import { exp2 } from '../../api'
+import { useState, useEffect } from 'react'
+import { exp2, catalog } from '../../api'
 import { useToast } from '../../components/Toast'
 import { Zap, Play, Shield, Users, CheckCircle2, XCircle, AlertCircle } from 'lucide-react'
 import styles from './Lab.module.css'
 
 export default function LabExp2Concurrency() {
   const toast = useToast()
-  const [seatId, setSeatId] = useState('seat-3fa85f64-A5')
+  const [availableSeats, setAvailableSeats] = useState([])
+  const [seatId, setSeatId] = useState('')
   const [threadCount, setThreadCount] = useState(5)
   const [running, setRunning] = useState(false)
   const [results, setResults] = useState(null)
   const [stats, setStats] = useState(null)
+
+  useEffect(() => {
+    fetchAvailableSeats()
+  }, [])
+
+  async function fetchAvailableSeats() {
+    try {
+      const showsRes = await catalog.getShows()
+      const showId = showsRes?.shows?.[0]?.id || '8fd0925d-364b-485e-837c-b2aaea27fa56'
+      const seatsRes = await catalog.getSeats(showId)
+      if (seatsRes?.seats?.length > 0) {
+        const avail = seatsRes.seats.filter(s => s.status === 'available')
+        setAvailableSeats(avail)
+        if (avail.length > 0) {
+          setSeatId(avail[0].id)
+        }
+      }
+    } catch {}
+  }
 
   async function handleRunTest() {
     if (!seatId.trim()) {
@@ -82,14 +102,28 @@ export default function LabExp2Concurrency() {
 
         <div className={styles.formRow}>
           <div className="field" style={{ flex: 2 }}>
-            <label>Target Shared Seat</label>
-            <input
-              type="text"
-              className="input"
-              value={seatId}
-              onChange={e => setSeatId(e.target.value)}
-              placeholder="e.g. seat-3fa85f64-A5"
-            />
+            <label>Target Shared Seat {availableSeats.length > 0 && <span style={{ color: '#059669', fontSize: '0.8rem' }}>(Live Supabase Seats Loaded)</span>}</label>
+            {availableSeats.length > 0 ? (
+              <select
+                className="input"
+                value={seatId}
+                onChange={e => setSeatId(e.target.value)}
+              >
+                {availableSeats.map(s => (
+                  <option key={s.id} value={s.id}>
+                    Seat {s.seatNumber} ({s.tier || 'Prime'} • ₹{s.price}) [UUID: {s.id.substring(0, 8)}...]
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                type="text"
+                className="input"
+                value={seatId}
+                onChange={e => setSeatId(e.target.value)}
+                placeholder="Enter Seat UUID"
+              />
+            )}
           </div>
 
           <div className="field" style={{ flex: 1 }}>
